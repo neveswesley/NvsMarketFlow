@@ -1,0 +1,6 @@
+@NvsMarketFlow.API_HostAddress = http://localhost:5017
+
+GET {{NvsMarketFlow.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
