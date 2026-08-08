@@ -15,7 +15,7 @@ public static class ServicesExtensions
         
         services.AddMediatR(cfg =>
         {
-            cfg.RegisterServicesFromAssembly(typeof(CreateCategoryCommand).Assembly);
+            cfg.RegisterServicesFromAssembly(typeof(CreateCategory.CreateCategoryCommand).Assembly);
         });
         
         

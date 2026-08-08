@@ -1,10 +1,12 @@
-﻿using NvsMarketFlow.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using NvsMarketFlow.Domain.Entities;
+using NvsMarketFlow.Domain.Interfaces.ReadOnly;
 using NvsMarketFlow.Domain.Interfaces.WriteOnly;
 using NvsMarketFlow.Infrastructure.DataAccess;
 
 namespace NvsMarketFlow.Infrastructure.Repositories;
 
-public class CategoryRepository : ICategoryWriteOnlyRepository
+public class CategoryRepository : ICategoryWriteOnlyRepository, ICategoryReadOnlyRepository
 {
 
     private readonly AppDbContext _dbContext;
@@ -19,5 +21,10 @@ public class CategoryRepository : ICategoryWriteOnlyRepository
         await _dbContext.Categories.AddAsync(category);
         await _dbContext.SaveChangesAsync();
         return category;
+    }
+
+    public async Task<List<Category>> GetAll()
+    {
+        return await _dbContext.Categories.ToListAsync();
     }
 }

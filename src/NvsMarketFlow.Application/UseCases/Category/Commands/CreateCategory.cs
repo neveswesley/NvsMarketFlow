@@ -5,26 +5,30 @@ using NvsMarketFlow.Domain.Interfaces.WriteOnly;
 
 namespace NvsMarketFlow.Application.UseCases.Category.Commands;
 
-public sealed record CreateCategoryCommand(CreateCategoryRequest Request) : IRequest<CreateCategoryResponse>;
-
-public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, CreateCategoryResponse>
+public abstract class CreateCategory
 {
-    private readonly ICategoryWriteOnlyRepository _categoryWriteOnlyRepository;
+    public sealed record CreateCategoryCommand(CreateCategoryRequest Request) : IRequest<CreateCategoryResponse>;
 
-    public CreateCategoryCommandHandler(ICategoryWriteOnlyRepository categoryWriteOnlyRepository)
+    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, CreateCategoryResponse>
     {
-        _categoryWriteOnlyRepository = categoryWriteOnlyRepository;
-    }
+        private readonly ICategoryWriteOnlyRepository _categoryWriteOnlyRepository;
 
-    public async Task<CreateCategoryResponse> Handle(CreateCategoryCommand command, CancellationToken cancellationToken)
-    {
-        var category = new Domain.Entities.Category(command.Request.Name);
-        
-        await _categoryWriteOnlyRepository.CreateAsync(category);
-
-        return new CreateCategoryResponse
+        public CreateCategoryCommandHandler(ICategoryWriteOnlyRepository categoryWriteOnlyRepository)
         {
-            Name = category.Name
-        };
+            _categoryWriteOnlyRepository = categoryWriteOnlyRepository;
+        }
+
+        public async Task<CreateCategoryResponse> Handle(CreateCategoryCommand command,
+            CancellationToken cancellationToken)
+        {
+            var category = new Domain.Entities.Category(command.Request.Name);
+
+            await _categoryWriteOnlyRepository.CreateAsync(category);
+
+            return new CreateCategoryResponse
+            {
+                Name = category.Name
+            };
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NvsMarketFlow.Domain.Interfaces.ReadOnly;
 using NvsMarketFlow.Domain.Interfaces.WriteOnly;
 using NvsMarketFlow.Infrastructure.DataAccess;
 using NvsMarketFlow.Infrastructure.Repositories;
@@ -26,5 +27,6 @@ public static class ServicesExtensions
     {
         services.AddScoped<ICategoryWriteOnlyRepository, CategoryRepository>();
         services.AddScoped<IProductWriteOnlyRepository, ProductRepository>();
+        services.AddScoped<ICategoryReadOnlyRepository, CategoryRepository>();
     }
 }
