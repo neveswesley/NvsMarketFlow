@@ -2,6 +2,9 @@
 using NvsMarketFlow.Application.Services.BarCode;
 using MediatR;
 using NvsMarketFlow.Application.UseCases.Category.Commands;
+using NvsMarketFlow.Application.UseCases.Category.Validators;
+using FluentValidation;
+using NvsMarketFlow.Application.Behaviors;
 
 
 namespace NvsMarketFlow.Application.Services;
@@ -13,13 +16,23 @@ public static class ServicesExtensions
     {
         services.AddScoped<IBarCodeService, BarCodeService>();
         
-        services.AddMediatR(cfg =>
+        services.AddMediatR(config =>
         {
-            cfg.RegisterServicesFromAssembly(typeof(CreateCategory.CreateCategoryCommand).Assembly);
+            config.RegisterServicesFromAssembly(
+                typeof(ValidationBehavior<,>).Assembly);
+
+            config.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
         
+        services.AddValidatorsFromAssembly(
+            typeof(CreateCategoryValidator).Assembly);
+        
+        services.AddTransient(
+            typeof(IPipelineBehavior<,>),
+            typeof(ValidationBehavior<,>));
         
         return services;
     }
+    
     
 }

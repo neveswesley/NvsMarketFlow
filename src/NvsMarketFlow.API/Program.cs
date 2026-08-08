@@ -1,3 +1,4 @@
+using NvsMarketFlow.API.Middleware;
 using NvsMarketFlow.Application.Services;
 using NvsMarketFlow.Infrastructure.Services;
 
@@ -20,6 +21,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.Run();
