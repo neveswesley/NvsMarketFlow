@@ -29,6 +29,21 @@ namespace NvsMarketFlow.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAll(
+            [FromQuery] string? name,
+            CancellationToken ct,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            var query = new GetAll.GetAllCategoriesQuery(name, page, pageSize);
+
+            return Ok(await _mediator.Send(query, ct));
+        }
+
+        [HttpGet("{categoryId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -1,9 +1,10 @@
-﻿using NvsMarketFlow.Domain.Entities;
+﻿using NvsMarketFlow.Application.Common;
+using NvsMarketFlow.Domain.Entities;
 
 namespace NvsMarketFlow.Domain.Interfaces.ReadOnly;
 
 public interface ICategoryReadOnlyRepository
 {
-    Task<List<Category>> GetAll();
+    Task<PagedResult<Category>> GetAllAsync(string? name, int page, int pageSize, CancellationToken ct);
     Task<Category> GetByIdAsync(Guid id, CancellationToken ct);
 }
