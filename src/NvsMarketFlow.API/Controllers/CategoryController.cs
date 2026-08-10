@@ -1,6 +1,6 @@
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NvsMarketFlow.Application.Requests.Category;
 using NvsMarketFlow.Application.UseCases.Category.Commands;
 using NvsMarketFlow.Application.UseCases.Category.Queries;
 

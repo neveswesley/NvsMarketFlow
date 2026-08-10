@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using NvsMarketFlow.Application.Exceptions;
 using NvsMarketFlow.Application.Requests.Category;
 using NvsMarketFlow.Application.Responses.Category;
+using NvsMarketFlow.Domain.Interfaces.ReadOnly;
 using NvsMarketFlow.Domain.Interfaces.WriteOnly;
 
 namespace NvsMarketFlow.Application.UseCases.Category.Commands;
@@ -12,15 +14,23 @@ public abstract class CreateCategory
     public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, CreateCategoryResponse>
     {
         private readonly ICategoryWriteOnlyRepository _categoryWriteOnlyRepository;
+        private readonly ICategoryReadOnlyRepository _categoryReadOnlyRepository;
 
-        public CreateCategoryCommandHandler(ICategoryWriteOnlyRepository categoryWriteOnlyRepository)
+        public CreateCategoryCommandHandler(ICategoryWriteOnlyRepository categoryWriteOnlyRepository, ICategoryReadOnlyRepository categoryReadOnlyRepository)
         {
             _categoryWriteOnlyRepository = categoryWriteOnlyRepository;
+            _categoryReadOnlyRepository = categoryReadOnlyRepository;
         }
 
         public async Task<CreateCategoryResponse> Handle(CreateCategoryCommand command,
             CancellationToken cancellationToken)
         {
+            
+            var nameExists = await _categoryReadOnlyRepository.ExistsByNameAsync(command.Request.Name, cancellationToken);
+
+            if (nameExists)
+                throw new DuplicateCategoryNameException($"Category name must be unique. A category named '{command.Request.Name}' already exists.");
+            
             var category = new Domain.Entities.Category(command.Request.Name);
 
             await _categoryWriteOnlyRepository.CreateAsync(category);
