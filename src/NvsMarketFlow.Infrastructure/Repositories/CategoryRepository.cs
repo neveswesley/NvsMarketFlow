@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NvsMarketFlow.Application.Common;
 using NvsMarketFlow.Domain.Entities;
 using NvsMarketFlow.Domain.Interfaces.ReadOnly;
 using NvsMarketFlow.Domain.Interfaces.WriteOnly;
@@ -23,7 +24,24 @@ public class CategoryRepository : ICategoryWriteOnlyRepository, ICategoryReadOnl
         return category;
     }
 
-    public async Task<List<Category>> GetAll()
+    public async Task<Category> UpdateAsync(Category category)
+    {
+        _dbContext.Update(category);
+        await _dbContext.SaveChangesAsync();
+        return category;
+    }
+
+    public async Task DeleteAsync(Category category)
+    {
+        _dbContext.Categories.Remove(category);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<PagedResult<Category>> GetAllAsync(
+        string? name,
+        int page,
+        int pageSize,
+        CancellationToken ct)
     {
         var query = _dbContext.Categories
             .AsNoTracking()

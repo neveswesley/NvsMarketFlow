@@ -53,5 +53,30 @@ namespace NvsMarketFlow.API.Controllers
             return Ok(await _mediator.Send(query, ct));
         }
         
+        [HttpPut("{categoryId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Update([FromRoute] Guid categoryId, [FromBody] UpdateCategoryRequest request, CancellationToken ct)
+        {
+            var command = new UpdateCategory.UpdateCategoryCommand(categoryId, request);
+            
+            await _mediator.Send(command, ct);
+            
+            return NoContent();
+        }
+
+        [HttpDelete("{categoryId:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> Delete([FromRoute] Guid categoryId, CancellationToken ct)
+        {
+            var command = new DeleteCategory.DeleteCategoryCommand(categoryId);
+
+            await _mediator.Send(command, ct);
+            
+            return NoContent();
+        }
     }
 }

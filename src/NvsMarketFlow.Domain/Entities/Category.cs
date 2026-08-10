@@ -10,4 +10,9 @@ public class Category
     {
         Name = name;
     }
+
+    public void UpdateCategory(string name)
+    {
+        Name = name;
+    }
 }

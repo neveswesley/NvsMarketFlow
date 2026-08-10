@@ -27,7 +27,7 @@ public class Product
     public decimal MinimumStock { get; private set; }
     public decimal MaximumStock { get; private set; }
 
-    public DateTime? ExpirationDate { get; set; }
+    public DateTime? ExpirationDate { get; private set; }
 
     public Unit Unit { get; private set; }
 
