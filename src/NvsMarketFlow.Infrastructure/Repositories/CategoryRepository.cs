@@ -26,5 +26,9 @@ public class CategoryRepository : ICategoryWriteOnlyRepository, ICategoryReadOnl
     public async Task<List<Category>> GetAll()
     {
         return await _dbContext.Categories.ToListAsync();
+    public async Task<Category> GetByIdAsync(Guid id, CancellationToken ct)
+    {
+        return await _dbContext.Categories.Include(c=>c.Products).FirstOrDefaultAsync(c => c.Id == id, ct);
+    }
     }
 }

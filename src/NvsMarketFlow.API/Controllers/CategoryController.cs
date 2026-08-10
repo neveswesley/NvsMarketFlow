@@ -32,9 +32,9 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAll(CancellationToken ct)
+        public async Task<IActionResult> GetById([FromRoute] Guid categoryId, CancellationToken ct)
         {
-            var query = new GetAll.GetAllCategoriesQuery();
+            var query = new GetById.GetByIdQuery(categoryId);
             return Ok(await _mediator.Send(query, ct));
         }
         
