@@ -43,6 +43,7 @@ public class ExceptionHandlingMiddleware
             NotFoundException => StatusCodes.Status404NotFound,
             UnauthorizedException => StatusCodes.Status401Unauthorized,
             BadRequestException => StatusCodes.Status400BadRequest,
+            CategoryHasLinkedProductsException => StatusCodes.Status409Conflict,
             _ => StatusCodes.Status500InternalServerError
         };
 

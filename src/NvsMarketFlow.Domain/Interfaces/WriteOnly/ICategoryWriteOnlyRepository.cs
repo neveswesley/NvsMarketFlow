@@ -6,4 +6,6 @@ public interface ICategoryWriteOnlyRepository
 {
     Task<Category> CreateAsync(Category category);
     Task<Category> UpdateAsync(Category category);
+    Task DeleteAsync(Category category);
+    
 }
