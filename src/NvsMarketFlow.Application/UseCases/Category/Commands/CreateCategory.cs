@@ -16,7 +16,8 @@ public abstract class CreateCategory
         private readonly ICategoryWriteOnlyRepository _categoryWriteOnlyRepository;
         private readonly ICategoryReadOnlyRepository _categoryReadOnlyRepository;
 
-        public CreateCategoryCommandHandler(ICategoryWriteOnlyRepository categoryWriteOnlyRepository, ICategoryReadOnlyRepository categoryReadOnlyRepository)
+        public CreateCategoryCommandHandler(ICategoryWriteOnlyRepository categoryWriteOnlyRepository, 
+            ICategoryReadOnlyRepository categoryReadOnlyRepository)
         {
             _categoryWriteOnlyRepository = categoryWriteOnlyRepository;
             _categoryReadOnlyRepository = categoryReadOnlyRepository;
@@ -29,7 +30,8 @@ public abstract class CreateCategory
             var nameExists = await _categoryReadOnlyRepository.ExistsByNameAsync(command.Request.Name, cancellationToken);
 
             if (nameExists)
-                throw new DuplicateCategoryNameException($"Category name must be unique. A category named '{command.Request.Name}' already exists.");
+                throw new DuplicateCategoryNameException
+                    ($"Category name must be unique. A category named '{command.Request.Name}' already exists.");
             
             var category = new Domain.Entities.Category(command.Request.Name);
 

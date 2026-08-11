@@ -11,7 +11,7 @@ public class CreateProductRequest
     
     public Guid CategoryId { get; set; }
     
-    public Guid BrandId { get; set; }
+    public Guid? BrandId { get; set; }
     
     public decimal CostPrice { get; set; }
     public decimal SalePrice { get; set; }
@@ -21,7 +21,7 @@ public class CreateProductRequest
     
     public DateTime? ExpirationDate { get; set; }
     
-    public Guid UnitId { get; set; }
+    public Unit Unit { get; set; }
     
     public Status Status { get; set; }
 }

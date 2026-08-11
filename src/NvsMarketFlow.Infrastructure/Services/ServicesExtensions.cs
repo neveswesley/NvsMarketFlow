@@ -26,7 +26,10 @@ public static class ServicesExtensions
     private static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<ICategoryWriteOnlyRepository, CategoryRepository>();
-        services.AddScoped<IProductWriteOnlyRepository, ProductRepository>();
         services.AddScoped<ICategoryReadOnlyRepository, CategoryRepository>();
+        
+        services.AddScoped<IProductWriteOnlyRepository, ProductRepository>();
+        services.AddScoped<IProductReadOnlyRepository, ProductRepository>();
+        
     }
 }
