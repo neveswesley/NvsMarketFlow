@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NvsMarketFlow.Application.Requests.Product;
 using NvsMarketFlow.Application.UseCases.Product.Commands;
+using NvsMarketFlow.Application.UseCases.Product.Queries;
+using NvsMarketFlow.Domain.Enums;
 
 namespace NvsMarketFlow.API.Controllers
 {
@@ -10,7 +12,6 @@ namespace NvsMarketFlow.API.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        
         private readonly IMediator _mediator;
 
         public ProductController(IMediator mediator)
@@ -26,6 +27,28 @@ namespace NvsMarketFlow.API.Controllers
             var command = new CreateProduct.CreateProductCommand(request, ct);
             var result = await _mediator.Send(command, ct);
             return Created(string.Empty, result);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllAsync(
+            CancellationToken ct,
+            [FromQuery] string? name,
+            [FromQuery] Guid? categoryId,
+            [FromQuery] Guid? brandId,
+            [FromQuery] Status? status,
+            [FromQuery] decimal? minPrice,
+            [FromQuery] decimal? maxPrice,
+            [FromQuery] bool? lowStock,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            var query = new GetAllProduct.GetAllProductQuery(name, categoryId, brandId, status, minPrice, maxPrice, lowStock, page, pageSize);
+            
+            var result = await _mediator.Send(query, ct);
+
+            return Ok(result);
         }
         
     }

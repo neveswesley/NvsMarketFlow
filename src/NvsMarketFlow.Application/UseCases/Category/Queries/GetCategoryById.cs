@@ -5,7 +5,7 @@ using NvsMarketFlow.Domain.Interfaces.ReadOnly;
 
 namespace NvsMarketFlow.Application.UseCases.Category.Queries;
 
-public abstract class GetById
+public abstract class GetCategoryById
 {
     public sealed record GetByIdQuery(Guid CategoryId) : IRequest<GetCategoryResponse>;
 

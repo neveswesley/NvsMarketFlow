@@ -5,7 +5,7 @@ using NvsMarketFlow.Domain.Interfaces.ReadOnly;
 
 namespace NvsMarketFlow.Application.UseCases.Category.Queries;
 
-public abstract class GetAll
+public abstract class GetAllCategory
 {
     public sealed record GetAllCategoriesQuery (string? Name, int Page = 1, int PageSize = 10) : IRequest<PagedResult<GetAllCategoryResponse>>;
 

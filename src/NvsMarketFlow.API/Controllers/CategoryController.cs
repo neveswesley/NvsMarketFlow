@@ -41,7 +41,7 @@ namespace NvsMarketFlow.API.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10)
         {
-            var query = new GetAll.GetAllCategoriesQuery(name, page, pageSize);
+            var query = new GetAllCategory.GetAllCategoriesQuery(name, page, pageSize);
 
             return Ok(await _mediator.Send(query, ct));
         }
@@ -52,7 +52,7 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] Guid categoryId, CancellationToken ct)
         {
-            var query = new GetById.GetByIdQuery(categoryId);
+            var query = new GetCategoryById.GetByIdQuery(categoryId);
             return Ok(await _mediator.Send(query, ct));
         }
         

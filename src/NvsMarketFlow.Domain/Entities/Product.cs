@@ -7,9 +7,9 @@ public class Product
     public Guid Id { get; private set; }
 
     public string Sku { get; private set; } = string.Empty;
-    public string Barcode { get; private set; } = string.Empty;
+    public string Barcode { get; private set; } = string.Empty;    public string Name { get; private set; } = string.Empty;
 
-    public string Name { get; private set; } = string.Empty;
+
     public string Description { get; private set; } = string.Empty;
     
     public Guid CategoryId { get; private set; }

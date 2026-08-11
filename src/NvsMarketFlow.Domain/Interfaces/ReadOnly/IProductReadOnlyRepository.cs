@@ -1,10 +1,24 @@
-﻿namespace NvsMarketFlow.Domain.Interfaces.ReadOnly;
+﻿using NvsMarketFlow.Application.Common;
+using NvsMarketFlow.Domain.Entities;
+using NvsMarketFlow.Domain.Enums;
+
+namespace NvsMarketFlow.Domain.Interfaces.ReadOnly;
 
 public interface IProductReadOnlyRepository
 {
     Task<bool> ExistsByNameAsync(string name, CancellationToken ct);
     Task<bool> ExistsBySkuAsync(string sku, CancellationToken ct);
     Task<bool> ExistsByBarcodeAsync(string barcode, CancellationToken ct);
-    
 
+    Task<PagedResult<Product>> GetAllAsync(
+        string? name,
+        Guid? categoryId,
+        Guid? brandId,
+        Status? status,
+        decimal? minPrice,
+        decimal? maxPrice,
+        bool? lowStock,
+        int page,
+        int pageSize,
+        CancellationToken ct);
 }
