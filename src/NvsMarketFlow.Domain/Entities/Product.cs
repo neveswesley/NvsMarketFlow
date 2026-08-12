@@ -7,8 +7,8 @@ public class Product
     public Guid Id { get; private set; }
 
     public string Sku { get; private set; } = string.Empty;
-    public string Barcode { get; private set; } = string.Empty;    public string Name { get; private set; } = string.Empty;
-
+    public string Barcode { get; private set; } = string.Empty;
+    public string Name { get; private set; } = string.Empty;
 
     public string Description { get; private set; } = string.Empty;
     
@@ -152,5 +152,24 @@ public class Product
         Unit = unit;
         UpdatedAt = DateTime.UtcNow;
     }
+
+    public void Deactivate()
+    {
+        if (Status == Status.Inactive)
+            throw new InvalidOperationException("Product is already inactive.");
+        
+        Status = Status.Inactive;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Activate()
+    {
+        if (Status == Status.Active)
+            throw new InvalidOperationException("Product is already active.");
+        
+        Status =  Status.Active;
+        UpdatedAt = DateTime.UtcNow;
+    }
+    
     
 }

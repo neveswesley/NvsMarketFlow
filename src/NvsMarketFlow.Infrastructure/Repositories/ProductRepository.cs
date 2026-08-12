@@ -31,6 +31,11 @@ public class ProductRepository : IProductWriteOnlyRepository, IProductReadOnlyRe
         await _dbContext.SaveChangesAsync(ct);
     }
 
+    public async Task DeleteAsync(CancellationToken ct)
+    {
+        await _dbContext.SaveChangesAsync(ct);
+    }
+
     public async Task<bool> ExistsByNameAsync(string name, CancellationToken ct)
     {
         return await _dbContext.Products.AnyAsync(p => p.Name == name, ct);

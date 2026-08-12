@@ -79,6 +79,18 @@ namespace NvsMarketFlow.API.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{productId:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid productId, CancellationToken ct)
+        {
+            var command = new DeleteProduct.DeleteProductCommand(productId);
+            
+            await _mediator.Send(command, ct);
+            
+            return NoContent();
+        }
         
     }
 }
