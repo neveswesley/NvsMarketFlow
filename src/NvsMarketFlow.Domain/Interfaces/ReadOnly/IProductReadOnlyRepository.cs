@@ -21,4 +21,5 @@ public interface IProductReadOnlyRepository
         int page,
         int pageSize,
         CancellationToken ct);
+    Task<Product?> GetByIdAsync(Guid id, CancellationToken ct);
 }
