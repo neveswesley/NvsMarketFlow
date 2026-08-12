@@ -56,7 +56,7 @@ namespace NvsMarketFlow.API.Controllers
             return Ok(await _mediator.Send(query, ct));
         }
         
-        [HttpPut("{categoryId}")]
+        [HttpPut("{categoryId:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

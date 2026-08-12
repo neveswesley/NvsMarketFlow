@@ -25,6 +25,12 @@ public class ProductRepository : IProductWriteOnlyRepository, IProductReadOnlyRe
         return product;
     }
 
+    public async Task UpdateAsync(Product product, CancellationToken ct)
+    {
+        _dbContext.Products.Update(product);
+        await _dbContext.SaveChangesAsync(ct);
+    }
+
     public async Task<bool> ExistsByNameAsync(string name, CancellationToken ct)
     {
         return await _dbContext.Products.AnyAsync(p => p.Name == name, ct);
@@ -53,9 +59,10 @@ public class ProductRepository : IProductWriteOnlyRepository, IProductReadOnlyRe
         CancellationToken ct)
     {
         var query = _dbContext.Products
-            .Include(p=>p.Category)
-            .Include(p=>p.Brand)
+            .Include(p => p.Category)
+            .Include(p => p.Brand)
             .AsNoTracking()
+            .Where(p => p.Status != Status.Inactive)
             .AsQueryable();
 
         //name
@@ -104,4 +111,11 @@ public class ProductRepository : IProductWriteOnlyRepository, IProductReadOnlyRe
             totalItems,
             totalPages);
     }
+
+    public async Task<Product?> GetByIdAsync(Guid id, CancellationToken ct)
+    {
+        return await _dbContext.Products.Include(p => p.Category).Include(p => p.Brand)
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
+    }
+    
 }

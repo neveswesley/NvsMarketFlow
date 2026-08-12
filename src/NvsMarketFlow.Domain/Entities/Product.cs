@@ -109,5 +109,48 @@ public class Product
 
         return string.Concat(digits);
     }
+
+    public void UpdateInfo(
+        string sku,
+        string barcode,
+        string name,
+        string description,
+        Guid categoryId,
+        Guid? brandId,
+        decimal costPrice,
+        decimal salePrice,
+        decimal minimumStock,
+        decimal maximumStock,
+        Unit unit) {
+        
+        if (costPrice < 0)
+            throw new ArgumentException("Cost price cannot be negative.");
+
+        if (salePrice <= 0)
+            throw new ArgumentException("Sale price must be greater than zero.");
+        
+
+        if (minimumStock < 0)
+            throw new ArgumentException("Minimum stock cannot be negative.");
+
+        if (maximumStock <= 0)
+            throw new ArgumentException("Maximum stock must be greater than zero.");
+
+        if (maximumStock < minimumStock)
+            throw new ArgumentException("Maximum stock cannot be lower than minimum stock.");
+        
+        Sku = sku;
+        Barcode = barcode;
+        Name = name;
+        Description = description;
+        CategoryId = categoryId;
+        BrandId = brandId;
+        CostPrice = costPrice;
+        SalePrice = salePrice;
+        MinimumStock = minimumStock;
+        MaximumStock = maximumStock;
+        Unit = unit;
+        UpdatedAt = DateTime.UtcNow;
+    }
     
 }

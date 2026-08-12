@@ -25,7 +25,9 @@ namespace NvsMarketFlow.API.Controllers
         public async Task<IActionResult> CreateAsync(CreateProductRequest request, CancellationToken ct)
         {
             var command = new CreateProduct.CreateProductCommand(request, ct);
+            
             var result = await _mediator.Send(command, ct);
+            
             return Created(string.Empty, result);
         }
 
@@ -50,6 +52,33 @@ namespace NvsMarketFlow.API.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("{productId:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetByIdAsync([FromRoute] Guid productId, CancellationToken ct)
+        {
+            var query = new GetProductById.GetProductByIdQuery(productId);
+            
+            var result = await _mediator.Send(query, ct);
+            
+            return Ok(result);
+        }
+
+        [HttpPut("{productId:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateAsync([FromRoute] Guid productId, UpdateProductInfoRequest request, CancellationToken ct)
+        {
+            var command = new UpdateProduct.UpdateProductCommand(productId, request);
+
+            await _mediator.Send(command, ct);
+            
+            return NoContent();
+        }
+
         
     }
 }

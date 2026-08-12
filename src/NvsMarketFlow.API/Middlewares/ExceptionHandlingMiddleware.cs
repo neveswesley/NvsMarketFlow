@@ -40,6 +40,7 @@ public class ExceptionHandlingMiddleware
         var statusCode = ex switch
         {
             ValidationException => StatusCodes.Status400BadRequest,
+            ArgumentException => StatusCodes.Status400BadRequest,
             NotFoundException => StatusCodes.Status404NotFound,
             UnauthorizedException => StatusCodes.Status401Unauthorized,
             BadRequestException => StatusCodes.Status400BadRequest,
