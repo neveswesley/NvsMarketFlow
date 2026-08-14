@@ -29,15 +29,15 @@ public class CreateProduct
             var existingName = await _productReadOnlyRepository.ExistsByNameAsync(command.Request.Name, ct);
             
             if (existingName)
-                throw new DuplicateProductNameException
-                    ($"Product name must be unique. A product named '{command.Request.Name}' already exists.");
+                throw new DuplicateFieldException
+                    ("Product", "name", command.Request.Name);
             
             var existingSku = await _productReadOnlyRepository
                 .ExistsBySkuAsync(command.Request.Sku, ct);
 
             if (existingSku)
-                throw new DuplicateProductSkuException(
-                    $"A product with SKU '{command.Request.Sku}' already exists.");
+                throw new DuplicateFieldException(
+                    "Product", "Sku", command.Request.Sku);
             
             var product = new Domain.Entities.Product(
                 command.Request.Sku,

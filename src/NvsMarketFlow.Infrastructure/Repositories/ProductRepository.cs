@@ -25,13 +25,7 @@ public class ProductRepository : IProductWriteOnlyRepository, IProductReadOnlyRe
         return product;
     }
 
-    public async Task UpdateAsync(Product product, CancellationToken ct)
-    {
-        _dbContext.Products.Update(product);
-        await _dbContext.SaveChangesAsync(ct);
-    }
-
-    public async Task DeleteAsync(CancellationToken ct)
+    public async Task SaveChangesAsync(CancellationToken ct)
     {
         await _dbContext.SaveChangesAsync(ct);
     }

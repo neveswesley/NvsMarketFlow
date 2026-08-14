@@ -16,6 +16,10 @@ public class AppDbContext : DbContext
    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+        modelBuilder.Entity<Product>()
+            .HasOne(p => p.Brand)
+            .WithMany()
+            .HasForeignKey(p => p.BrandId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

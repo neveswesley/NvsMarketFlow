@@ -45,9 +45,7 @@ public class ExceptionHandlingMiddleware
             NotFoundException => StatusCodes.Status404NotFound,
             UnauthorizedException => StatusCodes.Status401Unauthorized,
             BadRequestException => StatusCodes.Status400BadRequest,
-            DuplicateCategoryNameException => StatusCodes.Status400BadRequest,
-            DuplicateProductNameException => StatusCodes.Status400BadRequest,
-            DuplicateProductSkuException => StatusCodes.Status400BadRequest,
+            DuplicateFieldException =>  StatusCodes.Status400BadRequest,
             CategoryHasLinkedProductsException => StatusCodes.Status409Conflict,
             _ => StatusCodes.Status500InternalServerError
         };

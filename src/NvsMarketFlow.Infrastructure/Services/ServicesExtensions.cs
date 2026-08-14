@@ -20,7 +20,7 @@ public static class ServicesExtensions
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(
-                configuration.GetConnectionString("ConnectionString")));
+                configuration.GetConnectionString("DefaultConnection")));
     }
 
     private static void AddRepositories(this IServiceCollection services)
@@ -30,6 +30,9 @@ public static class ServicesExtensions
         
         services.AddScoped<IProductWriteOnlyRepository, ProductRepository>();
         services.AddScoped<IProductReadOnlyRepository, ProductRepository>();
+        
+        services.AddScoped<IBrandWriteOnlyRepository, BrandRepository>();
+        services.AddScoped<IBrandReadOnlyRepository, BrandRepository>();
         
     }
 }

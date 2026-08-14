@@ -40,7 +40,7 @@ public class UpdateProduct
                 command.Request.MaximumStock,
                 command.Request.Unit);
 
-            await _productWriteOnlyRepository.UpdateAsync(product, ct);
+            await _productWriteOnlyRepository.SaveChangesAsync(ct);
             return Unit.Value;
         }
     }

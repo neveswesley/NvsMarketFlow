@@ -30,8 +30,7 @@ public abstract class CreateCategory
             var nameExists = await _categoryReadOnlyRepository.ExistsByNameAsync(command.Request.Name, cancellationToken);
 
             if (nameExists)
-                throw new DuplicateCategoryNameException
-                    ($"Category name must be unique. A category named '{command.Request.Name}' already exists.");
+                throw new DuplicateFieldException("Category", "name", command.Request.Name);
             
             var category = new Domain.Entities.Category(command.Request.Name);
 
@@ -39,6 +38,7 @@ public abstract class CreateCategory
 
             return new CreateCategoryResponse
             {
+                Id = category.Id,
                 Name = category.Name
             };
         }

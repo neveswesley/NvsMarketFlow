@@ -28,13 +28,17 @@ namespace NvsMarketFlow.API.Controllers
             
             var result = await _mediator.Send(command, ct);
             
-            return Created(string.Empty, result);
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = result.Id },
+                result
+            );
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllAsync(
+        public async Task<IActionResult> GetAll(
             CancellationToken ct,
             [FromQuery] string? name,
             [FromQuery] Guid? categoryId,
@@ -57,7 +61,7 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetByIdAsync([FromRoute] Guid productId, CancellationToken ct)
+        public async Task<IActionResult> GetById([FromRoute] Guid productId, CancellationToken ct)
         {
             var query = new GetProductById.GetProductByIdQuery(productId);
             
@@ -70,7 +74,7 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateAsync([FromRoute] Guid productId, UpdateProductInfoRequest request, CancellationToken ct)
+        public async Task<IActionResult> Update([FromRoute] Guid productId, UpdateProductInfoRequest request, CancellationToken ct)
         {
             var command = new UpdateProduct.UpdateProductCommand(productId, request);
 
@@ -83,10 +87,23 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteAsync([FromRoute] Guid productId, CancellationToken ct)
+        public async Task<IActionResult> Delete([FromRoute] Guid productId, CancellationToken ct)
         {
             var command = new DeleteProduct.DeleteProductCommand(productId);
             
+            await _mediator.Send(command, ct);
+            
+            return NoContent();
+        }
+
+        [HttpPatch("{productId:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Activate([FromRoute] Guid productId, CancellationToken ct)
+        {
+            var command = new ActivateProduct.ActivateProductCommand(productId);
+
             await _mediator.Send(command, ct);
             
             return NoContent();

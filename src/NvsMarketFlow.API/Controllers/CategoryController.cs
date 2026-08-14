@@ -22,13 +22,18 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request, CancellationToken ct)
         {
             var command = new CreateCategory.CreateCategoryCommand(request);
-            
+    
             var result = await _mediator.Send(command, ct);
-            
-            return Created(string.Empty, result);
+    
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = result.Id },
+                result
+            );
         }
 
         [HttpGet]
