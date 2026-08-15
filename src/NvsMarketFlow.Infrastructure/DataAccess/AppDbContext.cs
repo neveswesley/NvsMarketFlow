@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<Brand> Brands { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<User> Users { get; set; }
    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,5 +22,8 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey(p => p.BrandId)
             .OnDelete(DeleteBehavior.SetNull);
+        
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
     }
 }

@@ -51,7 +51,7 @@ namespace NvsMarketFlow.API.Controllers
             return Ok(await _mediator.Send(query, ct));
         }
 
-        [HttpGet("{categoryId}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -61,7 +61,7 @@ namespace NvsMarketFlow.API.Controllers
             return Ok(await _mediator.Send(query, ct));
         }
         
-        [HttpPut("{categoryId:guid}")]
+        [HttpPut("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -74,7 +74,7 @@ namespace NvsMarketFlow.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{categoryId:guid}")]
+        [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]

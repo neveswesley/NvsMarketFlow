@@ -1,8 +1,7 @@
-﻿using System.Text.Json;
-using FluentValidation;
+﻿using FluentValidation;
 using NvsMarketFlow.Application.Exceptions;
 
-namespace NvsMarketFlow.API.Middleware;
+namespace NvsMarketFlow.API.Middlewares;
 
 public class ExceptionHandlingMiddleware
 {
@@ -25,9 +24,30 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unhandled exception occurred.");
+            LogException(ex);
 
             await HandleExceptionAsync(context, ex);
+        }
+    }
+
+    private void LogException(Exception ex)
+    {
+        var isExpectedException = ex is ValidationException
+            or ArgumentException
+            or InvalidOperationException
+            or NotFoundException
+            or UnauthorizedException
+            or BadRequestException
+            or DuplicateFieldException
+            or CategoryHasLinkedProductsException;
+
+        if (isExpectedException)
+        {
+            _logger.LogWarning(ex, "Handled exception: {Message}", ex.Message);
+        }
+        else
+        {
+            _logger.LogError(ex, "An unhandled exception occurred.");
         }
     }
 
@@ -45,7 +65,7 @@ public class ExceptionHandlingMiddleware
             NotFoundException => StatusCodes.Status404NotFound,
             UnauthorizedException => StatusCodes.Status401Unauthorized,
             BadRequestException => StatusCodes.Status400BadRequest,
-            DuplicateFieldException =>  StatusCodes.Status400BadRequest,
+            DuplicateFieldException => StatusCodes.Status409Conflict,
             CategoryHasLinkedProductsException => StatusCodes.Status409Conflict,
             _ => StatusCodes.Status500InternalServerError
         };

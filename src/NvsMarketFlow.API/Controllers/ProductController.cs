@@ -57,7 +57,7 @@ namespace NvsMarketFlow.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{productId:guid}")]
+        [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -70,7 +70,7 @@ namespace NvsMarketFlow.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut("{productId:guid}")]
+        [HttpPut("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -83,7 +83,7 @@ namespace NvsMarketFlow.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{productId:guid}")]
+        [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -96,7 +96,7 @@ namespace NvsMarketFlow.API.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{productId:guid}")]
+        [HttpPatch("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

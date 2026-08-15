@@ -1,4 +1,4 @@
-using NvsMarketFlow.API.Middleware;
+using NvsMarketFlow.API.Middlewares;
 using NvsMarketFlow.Application.Services;
 using NvsMarketFlow.Infrastructure.Services;
 

@@ -32,8 +32,6 @@ public class DeleteProduct
             await _productWriteOnlyRepository.SaveChangesAsync(cancellationToken);
             
             return Unit.Value;
-            
-            
         }
     }
 }
