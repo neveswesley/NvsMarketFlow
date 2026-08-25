@@ -30,19 +30,22 @@ public class ProductRepository : IProductWriteOnlyRepository, IProductReadOnlyRe
         return Task.CompletedTask;
     }
 
-    public async Task<bool> ExistsByNameAsync(string name, CancellationToken ct)
+    public async Task<bool> ExistsByNameAsync(string name, Guid? excludeId, CancellationToken ct)
     {
-        return await _dbContext.Products.AnyAsync(p => p.Name == name, ct);
+        return await _dbContext.Products
+            .AnyAsync(p => p.Name == name && (!excludeId.HasValue || p.Id != excludeId.Value), ct);
     }
 
-    public async Task<bool> ExistsBySkuAsync(string sku, CancellationToken ct)
+    public async Task<bool> ExistsBySkuAsync(string sku, Guid? excludeId, CancellationToken ct)
     {
-        return await _dbContext.Products.AnyAsync(p => p.Sku == sku, ct);
+        return await _dbContext.Products
+            .AnyAsync(p => p.Sku == sku && (!excludeId.HasValue || p.Id != excludeId.Value), ct);
     }
 
-    public async Task<bool> ExistsByBarcodeAsync(string barcode, CancellationToken ct)
+    public async Task<bool> ExistsByBarcodeAsync(string barcode, Guid? excludeId, CancellationToken ct)
     {
-        return await _dbContext.Products.AnyAsync(p => p.Barcode == barcode, ct);
+        return await _dbContext.Products
+            .AnyAsync(p => p.Barcode == barcode && (!excludeId.HasValue || p.Id != excludeId.Value), ct);
     }
 
     public async Task<PagedResult<Product>> GetAllAsync(

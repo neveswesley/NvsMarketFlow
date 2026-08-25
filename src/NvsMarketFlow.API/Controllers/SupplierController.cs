@@ -1,20 +1,21 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NvsMarketFlow.Application.Requests.Product;
-using NvsMarketFlow.Application.UseCases.Product.Commands;
-using NvsMarketFlow.Application.UseCases.Product.Queries;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using NvsMarketFlow.Application.Requests.Supplier;
+using NvsMarketFlow.Application.UseCases.Supplier.Commands;
+using NvsMarketFlow.Application.UseCases.Supplier.Queries;
 using NvsMarketFlow.Domain.Enums;
 
 namespace NvsMarketFlow.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class SupplierController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public ProductController(IMediator mediator)
+        public SupplierController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -22,64 +23,61 @@ namespace NvsMarketFlow.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateAsync(CreateProductRequest request, CancellationToken ct)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateSupplierRequest request, CancellationToken ct)
         {
-            var command = new CreateProduct.CreateProductCommand(request, ct);
-            
+            var command = new CreateSupplier.CreateSupplierCommand(request);
+
             var result = await _mediator.Send(command, ct);
-            
+
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = result.Id },
                 result
             );
         }
-
+        
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAll(
             CancellationToken ct,
-            [FromQuery] string? name,
-            [FromQuery] Guid? categoryId,
-            [FromQuery] Guid? brandId,
+            [FromQuery] string? corporateName,
+            [FromQuery] string? fantasyName,
+            [FromQuery] string? cnpj,
             [FromQuery] Status? status,
-            [FromQuery] decimal? minPrice,
-            [FromQuery] decimal? maxPrice,
-            [FromQuery] bool? lowStock,
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10)
         {
-            var query = new GetAllProduct.GetAllProductQuery(name, categoryId, brandId, status, minPrice, maxPrice, lowStock, page, pageSize);
-            
+            var query = new GetAllSupplier.GetAllSupplierQuery(corporateName, fantasyName, cnpj, status, page, pageSize);
+
             var result = await _mediator.Send(query, ct);
 
             return Ok(result);
         }
-
+        
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken ct)
         {
-            var query = new GetProductById.GetProductByIdQuery(id);
-            
+            var query = new GetSupplierById.GetSupplierByIdQuery(id);
+
             var result = await _mediator.Send(query, ct);
-            
+
             return Ok(result);
         }
-
+        
         [HttpPut("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update([FromRoute] Guid id, UpdateProductInfoRequest request, CancellationToken ct)
+        public async Task<IActionResult> Update([FromRoute] Guid id, UpdateSupplierInfoRequest request, CancellationToken ct)
         {
-            var command = new UpdateProduct.UpdateProductCommand(id, request);
+            var command = new UpdateSupplier.UpdateSupplierCommand(id, request);
 
             await _mediator.Send(command, ct);
-            
+
             return NoContent();
         }
 
@@ -89,7 +87,7 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Activate([FromRoute] Guid id, CancellationToken ct)
         {
-            var command = new ActivateProduct.ActivateProductCommand(id);
+            var command = new ActivateSupplier.ActivateSupplierCommand(id);
 
             await _mediator.Send(command, ct);
 
@@ -102,12 +100,11 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Deactivate([FromRoute] Guid id, CancellationToken ct)
         {
-            var command = new DeactivateProduct.DeactivateProductCommand(id);
+            var command = new DeactivateSupplier.DeactivateSupplierCommand(id);
 
             await _mediator.Send(command, ct);
 
             return NoContent();
         }
-        
     }
 }

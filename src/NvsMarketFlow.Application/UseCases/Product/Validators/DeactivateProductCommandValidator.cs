@@ -3,9 +3,9 @@ using NvsMarketFlow.Application.UseCases.Product.Commands;
 
 namespace NvsMarketFlow.Application.UseCases.Product.Validators;
 
-public class DeleteProductCommandValidator : AbstractValidator<DeleteProduct.DeleteProductCommand>
+public class DeactivateProductCommandValidator : AbstractValidator<DeactivateProduct.DeactivateProductCommand>
 {
-    public DeleteProductCommandValidator()
+    public DeactivateProductCommandValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()

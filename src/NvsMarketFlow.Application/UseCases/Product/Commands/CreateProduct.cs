@@ -27,18 +27,15 @@ public class CreateProduct
         public async Task<CreateProductResponse> Handle(CreateProductCommand command, CancellationToken ct)
         {
             
-            var existingName = await _productReadOnlyRepository.ExistsByNameAsync(command.Request.Name, ct);
-            
+            var existingName = await _productReadOnlyRepository.ExistsByNameAsync(command.Request.Name, null, ct);
+
             if (existingName)
-                throw new DuplicateFieldException
-                    ("Product", "name", command.Request.Name);
-            
-            var existingSku = await _productReadOnlyRepository
-                .ExistsBySkuAsync(command.Request.Sku, ct);
+                throw new DuplicateFieldException("Product", "name", command.Request.Name);
+
+            var existingSku = await _productReadOnlyRepository.ExistsBySkuAsync(command.Request.Sku, null, ct);
 
             if (existingSku)
-                throw new DuplicateFieldException(
-                    "Product", "Sku", command.Request.Sku);
+                throw new DuplicateFieldException("Product", "Sku", command.Request.Sku);
             
             var product = new Domain.Entities.Product(
                 command.Request.Sku,
@@ -46,6 +43,7 @@ public class CreateProduct
                 command.Request.Description,
                 command.Request.CategoryId,
                 command.Request.BrandId,
+                command.Request.SupplierId,
                 command.Request.CostPrice,
                 command.Request.SalePrice,
                 command.Request.CurrentStock,

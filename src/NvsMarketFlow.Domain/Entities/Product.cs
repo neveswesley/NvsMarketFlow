@@ -18,6 +18,9 @@ public class Product
 
     public Guid? BrandId { get; private set; }
     public Brand? Brand { get; private set; }
+    
+    public Guid? SupplierId { get; private set; }
+    public Supplier? Supplier { get; private set; }
 
     public decimal CostPrice { get; private set; }
     public decimal SalePrice { get; private set; }
@@ -41,10 +44,9 @@ public class Product
     {
     }
 
-    public Product(string sku, string name, string description, Guid categoryId, Guid? brandId, decimal costPrice,
-        decimal salePrice,
-        decimal currentStock, decimal minimumStock, decimal maximumStock, DateTime? expirationDate, Unit unit,
-        Status status)
+    public Product(string sku, string name, string description, Guid categoryId, Guid? brandId, Guid? supplierId,
+        decimal costPrice, decimal salePrice, decimal currentStock, decimal minimumStock, decimal maximumStock,
+        DateTime? expirationDate, Unit unit, Status status)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name cannot be empty;");
@@ -83,6 +85,7 @@ public class Product
         Description = description;
         CategoryId = categoryId;
         BrandId = brandId;
+        SupplierId = supplierId;
         CostPrice = costPrice;
         SalePrice = salePrice;
         CurrentStock = currentStock;
@@ -120,17 +123,8 @@ public class Product
     }
 
     public void UpdateInfo(
-        string sku,
-        string barcode,
-        string name,
-        string description,
-        Guid categoryId,
-        Guid? brandId,
-        decimal costPrice,
-        decimal salePrice,
-        decimal minimumStock,
-        decimal maximumStock,
-        Unit unit)
+        string sku, string barcode, string name, string description, Guid categoryId, Guid? brandId,
+        Guid? supplierId, decimal costPrice, decimal salePrice, decimal minimumStock, decimal maximumStock, Unit unit)
     {
         if (costPrice < 0)
             throw new ArgumentException("Cost price cannot be negative.");
@@ -154,6 +148,7 @@ public class Product
         Description = description;
         CategoryId = categoryId;
         BrandId = brandId;
+        SupplierId = supplierId;
         CostPrice = costPrice;
         SalePrice = salePrice;
         MinimumStock = minimumStock;

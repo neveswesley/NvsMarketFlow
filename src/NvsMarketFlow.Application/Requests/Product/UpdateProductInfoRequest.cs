@@ -11,6 +11,7 @@ public class UpdateProductInfoRequest
 
     public Guid CategoryId { get; set; }
     public Guid? BrandId { get; set; }
+    public Guid? SupplierId { get; set; }
 
     public decimal CostPrice { get; set; }
     public decimal SalePrice { get; set; }
