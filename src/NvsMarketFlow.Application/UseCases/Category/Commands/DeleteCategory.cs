@@ -14,11 +14,13 @@ public class DeleteCategory
 
         private readonly ICategoryWriteOnlyRepository _categoryWriteOnlyRepository;
         private readonly ICategoryReadOnlyRepository _categoryReadOnlyRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteCategoryCommandHandler(ICategoryWriteOnlyRepository categoryWriteOnlyRepository, ICategoryReadOnlyRepository categoryReadOnlyRepository)
+        public DeleteCategoryCommandHandler(ICategoryWriteOnlyRepository categoryWriteOnlyRepository, ICategoryReadOnlyRepository categoryReadOnlyRepository, IUnitOfWork unitOfWork)
         {
             _categoryWriteOnlyRepository = categoryWriteOnlyRepository;
             _categoryReadOnlyRepository = categoryReadOnlyRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
@@ -32,7 +34,8 @@ public class DeleteCategory
             if (hasProducts)
                 throw new CategoryHasLinkedProductsException("The category has linked products.");
 
-            await _categoryWriteOnlyRepository.DeleteAsync(category);
+            _categoryWriteOnlyRepository.DeleteAsync(category);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

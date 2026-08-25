@@ -14,15 +14,10 @@ public class AppDbContext : DbContext
     public DbSet<Brand> Brands { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<StockMovement> StockMovements { get; set; }
    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Product>()
-            .HasOne(p => p.Brand)
-            .WithMany()
-            .HasForeignKey(p => p.BrandId)
-            .OnDelete(DeleteBehavior.SetNull);
-        
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
     }

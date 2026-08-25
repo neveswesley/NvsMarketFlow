@@ -20,19 +20,12 @@ public class BrandRepository : IBrandWriteOnlyRepository, IBrandReadOnlyReposito
     public async Task<Brand> CreateAsync(Brand brand, CancellationToken ct)
     {
         await _dbContext.AddAsync(brand, ct);
-        await _dbContext.SaveChangesAsync(ct);
         return brand;
-    }
-
-    public async Task SaveChangesAsync(CancellationToken ct)
-    {
-        await _dbContext.SaveChangesAsync(ct);
     }
 
     public async Task DeleteAsync(Brand brand, CancellationToken ct)
     {
         _dbContext.Remove(brand);
-        await _dbContext.SaveChangesAsync(ct);
     }
 
     public async Task<bool> ExistsByNameAsync(string name, CancellationToken ct)

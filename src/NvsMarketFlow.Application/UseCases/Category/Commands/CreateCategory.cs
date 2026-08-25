@@ -15,12 +15,13 @@ public abstract class CreateCategory
     {
         private readonly ICategoryWriteOnlyRepository _categoryWriteOnlyRepository;
         private readonly ICategoryReadOnlyRepository _categoryReadOnlyRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateCategoryCommandHandler(ICategoryWriteOnlyRepository categoryWriteOnlyRepository, 
-            ICategoryReadOnlyRepository categoryReadOnlyRepository)
+        public CreateCategoryCommandHandler(ICategoryWriteOnlyRepository categoryWriteOnlyRepository, ICategoryReadOnlyRepository categoryReadOnlyRepository, IUnitOfWork unitOfWork)
         {
             _categoryWriteOnlyRepository = categoryWriteOnlyRepository;
             _categoryReadOnlyRepository = categoryReadOnlyRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<CreateCategoryResponse> Handle(CreateCategoryCommand command,
@@ -35,6 +36,8 @@ public abstract class CreateCategory
             var category = new Domain.Entities.Category(command.Request.Name);
 
             await _categoryWriteOnlyRepository.CreateAsync(category);
+            
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new CreateCategoryResponse
             {

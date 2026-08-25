@@ -12,13 +12,13 @@ public class ActivateProduct
     public class ActivateProductCommandHandler : IRequestHandler<ActivateProductCommand, Unit>
     {
         
-        private readonly IProductWriteOnlyRepository _productWriteOnlyRepository;
         private readonly IProductReadOnlyRepository _productReadOnlyRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ActivateProductCommandHandler(IProductWriteOnlyRepository productWriteOnlyRepository, IProductReadOnlyRepository productReadOnlyRepository)
+        public ActivateProductCommandHandler(IProductReadOnlyRepository productReadOnlyRepository, IUnitOfWork unitOfWork)
         {
-            _productWriteOnlyRepository = productWriteOnlyRepository;
             _productReadOnlyRepository = productReadOnlyRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(ActivateProductCommand request, CancellationToken cancellationToken)
@@ -28,7 +28,8 @@ public class ActivateProduct
                 throw new NotFoundException("Product not found.");
             
             product.Activate();
-            await _productWriteOnlyRepository.SaveChangesAsync(cancellationToken);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             
             return Unit.Value;
         }

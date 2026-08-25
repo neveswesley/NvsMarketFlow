@@ -14,11 +14,13 @@ public abstract class UpdateCategory
     {
         private readonly ICategoryWriteOnlyRepository _categoryWriteOnlyRepository;
         private readonly ICategoryReadOnlyRepository _categoryReadOnlyRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateCategoryCommandHandler(ICategoryWriteOnlyRepository categoryWriteOnlyRepository, ICategoryReadOnlyRepository categoryReadOnlyRepository)
+        public UpdateCategoryCommandHandler(ICategoryWriteOnlyRepository categoryWriteOnlyRepository, ICategoryReadOnlyRepository categoryReadOnlyRepository, IUnitOfWork unitOfWork)
         {
             _categoryWriteOnlyRepository = categoryWriteOnlyRepository;
             _categoryReadOnlyRepository = categoryReadOnlyRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Guid> Handle(UpdateCategoryCommand request, CancellationToken ct)
@@ -30,7 +32,10 @@ public abstract class UpdateCategory
             
             category.UpdateCategory(request.Request.Name);
             
-            await _categoryWriteOnlyRepository.UpdateAsync(category);
+             _categoryWriteOnlyRepository.UpdateAsync(category);
+             
+             await _unitOfWork.SaveChangesAsync(ct);
+             
             return category.Id;
         }
     }

@@ -12,7 +12,7 @@ public class User
     public DateTime? LastLogin { get; private set; }
     public Role Role { get; private set; }
     public DateTime CreatedAt { get; private set; }
-    public DateTime UpdatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
 
     public User()
     {
@@ -35,7 +35,7 @@ public class User
     public void UpdateName(string newName)
     {
         if (string.IsNullOrWhiteSpace(newName))
-            throw new ArgumentException("Nome não pode ser vazio.");
+            throw new ArgumentException("Name cannot be empty;");
 
         Name = newName;
         UpdatedAt = DateTime.UtcNow;
@@ -44,7 +44,7 @@ public class User
     public void UpdateEmail(string newEmail)
     {
         if (string.IsNullOrWhiteSpace(newEmail) || !newEmail.Contains('@'))
-            throw new ArgumentException("Email inválido.");
+            throw new ArgumentException("Invalid email.");
 
         Email = newEmail;
         UpdatedAt = DateTime.UtcNow;
@@ -53,7 +53,7 @@ public class User
     public void ChangePassword(string newPasswordHash)
     {
         if (string.IsNullOrWhiteSpace(newPasswordHash))
-            throw new ArgumentException("Hash de senha inválido.");
+            throw new ArgumentException("Invalid password hash.");
 
         PasswordHash = newPasswordHash;
         UpdatedAt = DateTime.UtcNow;

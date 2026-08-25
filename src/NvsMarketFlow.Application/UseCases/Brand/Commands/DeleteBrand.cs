@@ -13,11 +13,13 @@ public class DeleteBrand
     {
         private readonly IBrandWriteOnlyRepository _brandWriteOnlyRepository;
         private readonly IBrandReadOnlyRepository _brandReadOnlyRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteBrandCommandHandler(IBrandWriteOnlyRepository brandWriteOnlyRepository, IBrandReadOnlyRepository brandReadOnlyRepository)
+        public DeleteBrandCommandHandler(IBrandWriteOnlyRepository brandWriteOnlyRepository, IBrandReadOnlyRepository brandReadOnlyRepository, IUnitOfWork unitOfWork)
         {
             _brandWriteOnlyRepository = brandWriteOnlyRepository;
             _brandReadOnlyRepository = brandReadOnlyRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
@@ -28,6 +30,8 @@ public class DeleteBrand
                 throw new NotFoundException("Brand not found.");
             
             await _brandWriteOnlyRepository.DeleteAsync(brand, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            
             return Unit.Value;
         }
     }

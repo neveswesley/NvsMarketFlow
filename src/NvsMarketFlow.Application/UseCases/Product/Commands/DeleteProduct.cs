@@ -12,13 +12,13 @@ public class DeleteProduct
     public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, Unit>
     {
         
-        private readonly IProductWriteOnlyRepository _productWriteOnlyRepository;
         private readonly IProductReadOnlyRepository _productReadOnlyRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteProductCommandHandler(IProductWriteOnlyRepository productWriteOnlyRepository, IProductReadOnlyRepository productReadOnlyRepository)
+        public DeleteProductCommandHandler(IProductReadOnlyRepository productReadOnlyRepository, IUnitOfWork unitOfWork)
         {
-            _productWriteOnlyRepository = productWriteOnlyRepository;
             _productReadOnlyRepository = productReadOnlyRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
@@ -29,7 +29,7 @@ public class DeleteProduct
             
             product.Deactivate();
             
-            await _productWriteOnlyRepository.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             
             return Unit.Value;
         }

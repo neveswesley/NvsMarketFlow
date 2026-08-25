@@ -7,12 +7,18 @@ public class Brand
 
     public Brand(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Brand name is required.", nameof(name));
+        
         Id = Guid.NewGuid();
         Name = name;
     }
 
     public void Update(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Brand name is required.", nameof(name));
+        
         Name = name;
     }
     

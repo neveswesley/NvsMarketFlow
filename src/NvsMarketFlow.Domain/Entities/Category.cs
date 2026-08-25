@@ -8,11 +8,18 @@ public class Category
 
     public Category(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Name cannot be empty;");
+        
+        Id = Guid.NewGuid();
         Name = name;
     }
 
     public void UpdateCategory(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Name cannot be empty;");
+        
         Name = name;
     }
 }

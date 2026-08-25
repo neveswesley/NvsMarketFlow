@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NvsMarketFlow.Application.Behaviors;
 using NvsMarketFlow.Domain.Interfaces.ReadOnly;
 using NvsMarketFlow.Domain.Interfaces.Services;
 using NvsMarketFlow.Domain.Interfaces.WriteOnly;
@@ -28,6 +30,10 @@ public static class ServicesExtensions
 
     private static void AddRepositories(this IServiceCollection services)
     {
+        
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>));
+        
         services.AddScoped<ICategoryWriteOnlyRepository, CategoryRepository>();
         services.AddScoped<ICategoryReadOnlyRepository, CategoryRepository>();
         
@@ -39,6 +45,10 @@ public static class ServicesExtensions
         
         services.AddScoped<IBrandReadOnlyRepository, BrandRepository>();
         services.AddScoped<IBrandWriteOnlyRepository, BrandRepository>();
+        
+        services.AddScoped<IStockMovementReadOnlyRepository, StockMovementRepository>();
+        services.AddScoped<IStockMovementWriteOnlyRepository, StockMovementRepository>();
+        
     }
 
     private static void AddPasswordHasher(this IServiceCollection services)

@@ -20,21 +20,17 @@ public class CategoryRepository : ICategoryWriteOnlyRepository, ICategoryReadOnl
     public async Task<Category> CreateAsync(Category category)
     {
         await _dbContext.Categories.AddAsync(category);
-        await _dbContext.SaveChangesAsync();
         return category;
     }
 
-    public async Task<Category> UpdateAsync(Category category)
+    public void UpdateAsync(Category category)
     {
         _dbContext.Update(category);
-        await _dbContext.SaveChangesAsync();
-        return category;
     }
 
-    public async Task DeleteAsync(Category category)
+    public void DeleteAsync(Category category)
     {
         _dbContext.Categories.Remove(category);
-        await _dbContext.SaveChangesAsync();
     }
 
     public async Task<PagedResult<Category>> GetAllAsync(
@@ -71,7 +67,7 @@ public class CategoryRepository : ICategoryWriteOnlyRepository, ICategoryReadOnl
             totalPages);
     }
 
-    public async Task<Category> GetByIdAsync(Guid id, CancellationToken ct)
+    public async Task<Category?> GetByIdAsync(Guid id, CancellationToken ct)
     {
         return await _dbContext.Categories.Include(c=>c.Products).FirstOrDefaultAsync(c => c.Id == id, ct);
     }

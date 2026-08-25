@@ -61,9 +61,9 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById([FromRoute] Guid productId, CancellationToken ct)
+        public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken ct)
         {
-            var query = new GetProductById.GetProductByIdQuery(productId);
+            var query = new GetProductById.GetProductByIdQuery(id);
             
             var result = await _mediator.Send(query, ct);
             
@@ -74,9 +74,9 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update([FromRoute] Guid productId, UpdateProductInfoRequest request, CancellationToken ct)
+        public async Task<IActionResult> Update([FromRoute] Guid id, UpdateProductInfoRequest request, CancellationToken ct)
         {
-            var command = new UpdateProduct.UpdateProductCommand(productId, request);
+            var command = new UpdateProduct.UpdateProductCommand(id, request);
 
             await _mediator.Send(command, ct);
             
@@ -87,9 +87,9 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete([FromRoute] Guid productId, CancellationToken ct)
+        public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken ct)
         {
-            var command = new DeleteProduct.DeleteProductCommand(productId);
+            var command = new DeleteProduct.DeleteProductCommand(id);
             
             await _mediator.Send(command, ct);
             
@@ -100,9 +100,9 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Activate([FromRoute] Guid productId, CancellationToken ct)
+        public async Task<IActionResult> Activate([FromRoute] Guid id, CancellationToken ct)
         {
-            var command = new ActivateProduct.ActivateProductCommand(productId);
+            var command = new ActivateProduct.ActivateProductCommand(id);
 
             await _mediator.Send(command, ct);
             

@@ -13,13 +13,13 @@ public class UpdateProduct
     public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Unit>
     {
 
-        private readonly IProductWriteOnlyRepository _productWriteOnlyRepository;
-        private readonly IProductReadOnlyRepository _productReadOnlyRepository ;
+        private readonly IProductReadOnlyRepository _productReadOnlyRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateProductCommandHandler(IProductWriteOnlyRepository productWriteOnlyRepository, IProductReadOnlyRepository productReadOnlyRepository)
+        public UpdateProductCommandHandler(IProductReadOnlyRepository productReadOnlyRepository, IUnitOfWork unitOfWork)
         {
-            _productWriteOnlyRepository = productWriteOnlyRepository;
             _productReadOnlyRepository = productReadOnlyRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(UpdateProductCommand command, CancellationToken ct)
@@ -40,7 +40,8 @@ public class UpdateProduct
                 command.Request.MaximumStock,
                 command.Request.Unit);
 
-            await _productWriteOnlyRepository.SaveChangesAsync(ct);
+            await _unitOfWork.SaveChangesAsync(ct);
+            
             return Unit.Value;
         }
     }

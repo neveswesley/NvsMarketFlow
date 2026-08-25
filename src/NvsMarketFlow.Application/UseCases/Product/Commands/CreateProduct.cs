@@ -15,12 +15,13 @@ public class CreateProduct
     {
         private readonly IProductWriteOnlyRepository _productWriteOnlyRepository;
         private readonly IProductReadOnlyRepository _productReadOnlyRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateProductCommandHandler(IProductWriteOnlyRepository productWriteOnlyRepository,
-            IProductReadOnlyRepository productReadOnlyRepository)
+        public CreateProductCommandHandler(IProductWriteOnlyRepository productWriteOnlyRepository, IProductReadOnlyRepository productReadOnlyRepository, IUnitOfWork unitOfWork)
         {
             _productWriteOnlyRepository = productWriteOnlyRepository;
             _productReadOnlyRepository = productReadOnlyRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<CreateProductResponse> Handle(CreateProductCommand command, CancellationToken ct)
@@ -55,6 +56,8 @@ public class CreateProduct
                 command.Request.Status);
 
             await _productWriteOnlyRepository.CreateAsync(product, ct);
+
+            await _unitOfWork.SaveChangesAsync(ct);
 
             return new CreateProductResponse()
             {

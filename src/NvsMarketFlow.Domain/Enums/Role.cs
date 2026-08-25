@@ -2,7 +2,7 @@
 
 public enum Role
 {
-    Administrator,
-    Cashier,
-    Supervisor
+    Administrator = 0,
+    Cashier = 1,
+    Supervisor = 2
 }

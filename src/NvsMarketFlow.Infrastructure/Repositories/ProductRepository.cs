@@ -21,13 +21,13 @@ public class ProductRepository : IProductWriteOnlyRepository, IProductReadOnlyRe
     public async Task<Product> CreateAsync(Product product, CancellationToken ct)
     {
         await _dbContext.Products.AddAsync(product, ct);
-        await _dbContext.SaveChangesAsync(ct);
         return product;
     }
 
-    public async Task SaveChangesAsync(CancellationToken ct)
+    public Task UpdateAsync(Product product, CancellationToken ct)
     {
-        await _dbContext.SaveChangesAsync(ct);
+        _dbContext.Update(product);
+        return Task.CompletedTask;
     }
 
     public async Task<bool> ExistsByNameAsync(string name, CancellationToken ct)

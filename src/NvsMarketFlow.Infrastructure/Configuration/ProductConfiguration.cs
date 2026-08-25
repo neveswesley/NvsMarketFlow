@@ -8,6 +8,10 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
+        builder.Property(p => p.Name)
+            .IsRequired()
+            .HasMaxLength(200);
+        
         builder.Property(p => p.CostPrice)
             .HasPrecision(18, 2);
 
@@ -22,5 +26,17 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(p => p.MaximumStock)
             .HasPrecision(18, 3);
+
+        builder.HasOne(p => p.Category)
+            .WithMany(p => p.Products)
+            .HasForeignKey(p => p.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.HasOne(p=>p.Brand)
+            .WithMany()
+            .HasForeignKey(p => p.BrandId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasIndex(p => p.Name);
     }
 }
