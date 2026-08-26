@@ -31,4 +31,7 @@ public class StockMovement
         UserId = userId;
         Date = DateTime.UtcNow;
     }
+    
+    
+    
 }

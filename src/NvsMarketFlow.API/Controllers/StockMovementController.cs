@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NvsMarketFlow.Application.Requests.StockMovement;
-using NvsMarketFlow.Application.UseCases.StockMovement.Command;
+using NvsMarketFlow.Application.UseCases.StockMovement.Commands;
 using NvsMarketFlow.Application.UseCases.StockMovement.Queries;
 using NvsMarketFlow.Domain.Entities;
 using NvsMarketFlow.Domain.Enums;

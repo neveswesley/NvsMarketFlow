@@ -1,11 +1,10 @@
 ﻿using MediatR;
 using NvsMarketFlow.Application.Requests.StockMovement;
 using NvsMarketFlow.Application.Responses.StockMovement;
-using NvsMarketFlow.Domain.Interfaces;
 using NvsMarketFlow.Domain.Interfaces.ReadOnly;
 using NvsMarketFlow.Domain.Interfaces.WriteOnly;
 
-namespace NvsMarketFlow.Application.UseCases.StockMovement.Command;
+namespace NvsMarketFlow.Application.UseCases.StockMovement.Commands;
 
 public class CreateStockMovement
 {
@@ -43,7 +42,7 @@ public class CreateStockMovement
             var stockMovement = new Domain.Entities.StockMovement(request.Request.ProductId, request.Request.UserId,
                 request.Request.MovementType, request.Request.Quantity, request.Request.Reason);
  
-            await _stockMovementWriteOnlyRepository.CreateAsync(stockMovement);
+            await _stockMovementWriteOnlyRepository.CreateAsync(stockMovement, cancellationToken);
  
             return new CreateStockMovementResponse()
             {

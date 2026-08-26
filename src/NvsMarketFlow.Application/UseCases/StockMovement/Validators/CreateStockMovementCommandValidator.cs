@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using NvsMarketFlow.Application.UseCases.StockMovement.Command;
+using NvsMarketFlow.Application.UseCases.StockMovement.Commands;
 using NvsMarketFlow.Domain.Enums;
 
 namespace NvsMarketFlow.Application.UseCases.StockMovement.Validators;

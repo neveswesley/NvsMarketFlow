@@ -29,6 +29,7 @@ public class Product
     public decimal CurrentStock { get; private set; }
     public decimal MinimumStock { get; private set; }
     public decimal MaximumStock { get; private set; }
+    public bool ExceedsMaximumStock => CurrentStock > MaximumStock;
 
     public DateTime? ExpirationDate { get; private set; }
 
@@ -175,7 +176,7 @@ public class Product
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void ApplyStockMovement(MovementType movementType, decimal quantity, bool? isIncrease = null)
+    public void ApplyStockMovement(MovementType movementType, decimal quantity, bool? isIncrease = null, bool bypassMaximumStock = false)
     {
         if (quantity <= 0)
             throw new ArgumentException("Quantity must be greater than zero.");
@@ -202,7 +203,7 @@ public class Product
         {
             CurrentStock += quantity;
 
-            if (CurrentStock > MaximumStock)
+            if (!bypassMaximumStock && CurrentStock > MaximumStock)
                 throw new InvalidOperationException(
                     $"Resulting stock ({CurrentStock}) would exceed maximum stock ({MaximumStock}).");
         }
@@ -215,6 +216,15 @@ public class Product
             CurrentStock -= quantity;
         }
 
+        UpdatedAt = DateTime.UtcNow;
+    }
+    
+    public void UpdateCostPrice(decimal costPrice)
+    {
+        if (costPrice < 0)
+            throw new ArgumentException("Cost price cannot be negative.");
+
+        CostPrice = costPrice;
         UpdatedAt = DateTime.UtcNow;
     }
 }

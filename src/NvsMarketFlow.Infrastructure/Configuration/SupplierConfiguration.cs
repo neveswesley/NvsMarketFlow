@@ -39,5 +39,10 @@ public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
             .WithOne(p => p.Supplier)
             .HasForeignKey(p => p.SupplierId)
             .OnDelete(DeleteBehavior.SetNull);
+        
+        builder.HasMany<Purchase>()
+            .WithOne(p => p.Supplier)
+            .HasForeignKey(p => p.SupplierId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

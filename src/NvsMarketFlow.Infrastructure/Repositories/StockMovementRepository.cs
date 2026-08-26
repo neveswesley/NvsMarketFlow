@@ -18,9 +18,9 @@ public class StockMovementRepository : IStockMovementReadOnlyRepository, IStockM
         _context = context;
     }
 
-    public async Task<StockMovement> CreateAsync(StockMovement stockMovement)
+    public async Task<StockMovement> CreateAsync(StockMovement stockMovement, CancellationToken ct)
     {
-        await _context.StockMovements.AddAsync(stockMovement);
+        await _context.StockMovements.AddAsync(stockMovement, ct);
         return stockMovement;
     }
 
