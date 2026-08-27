@@ -24,7 +24,7 @@ public class UpdateName
 
         public async Task<Unit> Handle(UpdateNameCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userReadOnlyRepository.GetById(request.Id, cancellationToken);
+            var user = await _userReadOnlyRepository.GetByIdAsync(request.Id, cancellationToken);
             if (user == null)
                 throw new NotFoundException("User not found.");
             

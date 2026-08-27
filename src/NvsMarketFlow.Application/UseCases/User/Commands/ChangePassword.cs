@@ -28,7 +28,7 @@ public class ChangePassword
 
         public async Task<Unit> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userReadOnlyRepository.GetById(request.Id, cancellationToken);
+            var user = await _userReadOnlyRepository.GetByIdAsync(request.Id, cancellationToken);
             if (user == null)
                 throw new NotFoundException("User not found");
 

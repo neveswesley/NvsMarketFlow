@@ -55,6 +55,15 @@ public static class ServicesExtensions
         services.AddScoped<IPurchaseReadOnlyRepository, PurchaseRepository>();
         services.AddScoped<IPurchaseWriteOnlyRepository, PurchaseRepository>();
         
+        services.AddScoped<ICashRegisterReadOnlyRepository, CashRegisterRepository>();
+        services.AddScoped<ICashRegisterWriteOnlyRepository, CashRegisterRepository>();
+        
+        services.AddScoped<ICashMovementReadOnlyRepository, CashMovementRepository>();
+        services.AddScoped<ICashMovementWriteOnlyRepository, CashMovementRepository>();
+        
+        services.AddScoped<ISaleReadOnlyRepository, SaleRepository>();
+        services.AddScoped<ISaleWriteOnlyRepository, SaleRepository>();
+        
     }
 
     private static void AddPasswordHasher(this IServiceCollection services)

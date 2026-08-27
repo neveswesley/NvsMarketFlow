@@ -18,6 +18,11 @@ public class AppDbContext : DbContext
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Purchase> Purchases { get; set; }
     public DbSet<PurchaseItem> PurchaseItems { get; set; }
+    public DbSet<CashRegister> CashRegisters { get; set; }
+    public DbSet<CashMovement> CashMovements { get; set; }
+    public DbSet<Sale> Sales { get; set; }
+    public DbSet<SaleItem> SaleItems { get; set; }
+    public DbSet<Payment> Payments { get; set; }
    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

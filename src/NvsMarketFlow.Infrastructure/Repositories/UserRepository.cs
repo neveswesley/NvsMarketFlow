@@ -40,7 +40,7 @@ public class UserRepository : IUserWriteOnlyRepository, IUserReadOnlyRepository
         return  await _dbContext.Users.SingleOrDefaultAsync(e => e.Email == email, cancellationToken);
     }
 
-    public async Task<User?> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _dbContext.Users.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
     }

@@ -20,7 +20,7 @@ public class GetUserById
 
         public async Task<GetUserResponse> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userReadOnlyRepository.GetById(request.Id, request.CancellationToken);
+            var user = await _userReadOnlyRepository.GetByIdAsync(request.Id, request.CancellationToken);
 
             if (user == null)
                 throw new NotFoundException("User not found.");

@@ -27,7 +27,7 @@ public class UpdateEmail
             if (emailExists)
                 throw new DuplicateFieldException("Email", "email", request.Request.NewEmail);
             
-            var user = await _userReadOnlyRepository.GetById(request.Id, cancellationToken);
+            var user = await _userReadOnlyRepository.GetByIdAsync(request.Id, cancellationToken);
             if (user == null)
                 throw new NotFoundException("User not found");
             

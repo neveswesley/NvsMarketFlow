@@ -23,7 +23,7 @@ public class DeleteUser
         
         public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userReadOnlyRepository.GetById(request.Id, cancellationToken);
+            var user = await _userReadOnlyRepository.GetByIdAsync(request.Id, cancellationToken);
             if (user == null)
                 throw new NotFoundException("User not found.");
             
