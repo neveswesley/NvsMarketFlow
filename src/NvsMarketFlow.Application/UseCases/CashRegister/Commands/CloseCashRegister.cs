@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsMarketFlow.Application.Events;
 using NvsMarketFlow.Application.Exceptions;
 using NvsMarketFlow.Application.Requests.CashRegister;
 using NvsMarketFlow.Application.Responses.CashRegister;
@@ -16,15 +17,14 @@ public class CloseCashRegister
     {
         private readonly ICashRegisterReadOnlyRepository _cashRegisterReadOnlyRepository;
         private readonly ICashMovementReadOnlyRepository _cashMovementReadOnlyRepository;
+        private readonly IPublisher _publisher;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CloseCashRegisterCommandHandler(
-            ICashRegisterReadOnlyRepository cashRegisterReadOnlyRepository,
-            ICashMovementReadOnlyRepository cashMovementReadOnlyRepository,
-            IUnitOfWork unitOfWork)
+        public CloseCashRegisterCommandHandler(ICashRegisterReadOnlyRepository cashRegisterReadOnlyRepository, ICashMovementReadOnlyRepository cashMovementReadOnlyRepository, IPublisher publisher, IUnitOfWork unitOfWork)
         {
             _cashRegisterReadOnlyRepository = cashRegisterReadOnlyRepository;
             _cashMovementReadOnlyRepository = cashMovementReadOnlyRepository;
+            _publisher = publisher;
             _unitOfWork = unitOfWork;
         }
 
@@ -42,6 +42,14 @@ public class CloseCashRegister
                 movements.Sum(m => m.IsIncrease ? m.Value : -m.Value);
 
             var discrepancy = cashRegister.Close(command.Request.ClosingBalance, expectedBalance);
+            
+            if (discrepancy != 0)
+            {
+                await _publisher.Publish(new CashRegisterDiscrepancyEvent(
+                    cashRegister.Id,
+                    cashRegister.UserId,
+                    discrepancy), ct);
+            }
 
             await _unitOfWork.SaveChangesAsync(ct);
 

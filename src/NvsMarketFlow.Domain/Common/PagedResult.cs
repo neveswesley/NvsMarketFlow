@@ -1,4 +1,4 @@
-﻿namespace NvsMarketFlow.Application.Common;
+﻿namespace NvsMarketFlow.Domain.Common;
 
 public sealed record PagedResult<T>(
     IReadOnlyList<T> Items,

@@ -1,4 +1,4 @@
-﻿using NvsMarketFlow.Application.Common;
+﻿using NvsMarketFlow.Domain.Common;
 using NvsMarketFlow.Domain.Entities;
 using NvsMarketFlow.Domain.Enums;
 

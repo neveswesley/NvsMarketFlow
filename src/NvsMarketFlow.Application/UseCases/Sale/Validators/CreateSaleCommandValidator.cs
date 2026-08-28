@@ -9,8 +9,5 @@ public class CreateSaleCommandValidator : AbstractValidator<CreateSale.CreateSal
     {
         RuleFor(x => x.Request.CashRegisterId)
             .NotEmpty().WithMessage("Cash register id is required.");
-
-        RuleFor(x => x.Request.SellerId)
-            .NotEmpty().WithMessage("Seller id is required.");
     }
 }

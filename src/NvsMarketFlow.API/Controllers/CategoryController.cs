@@ -51,13 +51,13 @@ namespace NvsMarketFlow.API.Controllers
             return Ok(await _mediator.Send(query, ct));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById([FromRoute] Guid categoryId, CancellationToken ct)
+        public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken ct)
         {
-            var query = new GetCategoryById.GetByIdQuery(categoryId);
+            var query = new GetCategoryById.GetByIdQuery(id);
             return Ok(await _mediator.Send(query, ct));
         }
         
@@ -65,9 +65,9 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update([FromRoute] Guid categoryId, [FromBody] UpdateCategoryRequest request, CancellationToken ct)
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCategoryRequest request, CancellationToken ct)
         {
-            var command = new UpdateCategory.UpdateCategoryCommand(categoryId, request);
+            var command = new UpdateCategory.UpdateCategoryCommand(id, request);
             
             await _mediator.Send(command, ct);
             
@@ -78,9 +78,9 @@ namespace NvsMarketFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> Delete([FromRoute] Guid categoryId, CancellationToken ct)
+        public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken ct)
         {
-            var command = new DeleteCategory.DeleteCategoryCommand(categoryId);
+            var command = new DeleteCategory.DeleteCategoryCommand(id);
 
             await _mediator.Send(command, ct);
             

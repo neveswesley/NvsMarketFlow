@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using NvsMarketFlow.Application.Common;
 using NvsMarketFlow.Application.Responses.Brand;
 using NvsMarketFlow.Application.Responses.User;
+using NvsMarketFlow.Domain.Common;
 using NvsMarketFlow.Domain.Interfaces.ReadOnly;
 
 namespace NvsMarketFlow.Application.UseCases.User.Query;

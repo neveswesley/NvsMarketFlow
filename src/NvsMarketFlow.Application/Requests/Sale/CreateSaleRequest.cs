@@ -3,5 +3,4 @@
 public class CreateSaleRequest
 {
     public Guid CashRegisterId { get; set; }
-    public Guid SellerId { get; set; }
 }

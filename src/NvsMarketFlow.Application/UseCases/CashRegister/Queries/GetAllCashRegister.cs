@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using NvsMarketFlow.Application.Common;
 using NvsMarketFlow.Application.Responses.CashRegister;
+using NvsMarketFlow.Domain.Common;
 using NvsMarketFlow.Domain.Enums;
 using NvsMarketFlow.Domain.Interfaces.ReadOnly;
 

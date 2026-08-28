@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsMarketFlow.Application.Events;
 using NvsMarketFlow.Application.Exceptions;
 using NvsMarketFlow.Application.Responses.Sale;
 using NvsMarketFlow.Domain.Enums;
@@ -17,17 +18,15 @@ public class FinalizeSale
         private readonly IStockMovementWriteOnlyRepository _stockMovementWriteOnlyRepository;
         private readonly ICashMovementWriteOnlyRepository _cashMovementWriteOnlyRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IPublisher _publisher;
 
-        public FinalizeSaleCommandHandler(
-            ISaleReadOnlyRepository saleReadOnlyRepository,
-            IStockMovementWriteOnlyRepository stockMovementWriteOnlyRepository,
-            ICashMovementWriteOnlyRepository cashMovementWriteOnlyRepository,
-            IUnitOfWork unitOfWork)
+        public FinalizeSaleCommandHandler(ISaleReadOnlyRepository saleReadOnlyRepository, IStockMovementWriteOnlyRepository stockMovementWriteOnlyRepository, ICashMovementWriteOnlyRepository cashMovementWriteOnlyRepository, IUnitOfWork unitOfWork, IPublisher publisher)
         {
             _saleReadOnlyRepository = saleReadOnlyRepository;
             _stockMovementWriteOnlyRepository = stockMovementWriteOnlyRepository;
             _cashMovementWriteOnlyRepository = cashMovementWriteOnlyRepository;
             _unitOfWork = unitOfWork;
+            _publisher = publisher;
         }
 
         public async Task<FinalizeSaleResponse> Handle(FinalizeSaleCommand command, CancellationToken ct)
@@ -41,7 +40,18 @@ public class FinalizeSale
 
             foreach (var item in sale.Items)
             {
+                
                 item.Product.ApplyStockMovement(MovementType.Sale, item.Quantity);
+                
+                if (item.Product.CurrentStock <= item.Product.MinimumStock)
+                {
+                    await _publisher.Publish(new ProductLowStockEvent(
+                        item.Product.Id,
+                        item.Product.Name,
+                        item.Product.CurrentStock,
+                        item.Product.MinimumStock,
+                        sale.SellerId), ct);
+                }
 
                 var stockMovement = new Domain.Entities.StockMovement(
                     item.ProductId,

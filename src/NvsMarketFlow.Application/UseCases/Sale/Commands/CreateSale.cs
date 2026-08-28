@@ -45,17 +45,12 @@ public class CreateSale
             if (cashRegister.Status != CashRegisterStatus.Open)
                 throw new InvalidOperationException("Cannot start a sale on a closed cash register.");
 
-            var seller = await _userReadOnlyRepository.GetByIdAsync(command.Request.SellerId, ct);
-
-            if (seller is null)
-                throw new NotFoundException($"User with id '{command.Request.SellerId}' not found.");
-
             var nextNumber = await _saleReadOnlyRepository.GetNextSaleNumberAsync(ct);
             var saleNumber = nextNumber.ToString("D6");
 
             var sale = new Domain.Entities.Sale(
                 command.Request.CashRegisterId,
-                command.Request.SellerId,
+                cashRegister.UserId,
                 saleNumber);
 
             await _saleWriteOnlyRepository.CreateAsync(sale, ct);

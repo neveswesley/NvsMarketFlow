@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using NvsMarketFlow.Application.Common;
 using NvsMarketFlow.Application.Responses.Category;
+using NvsMarketFlow.Domain.Common;
 using NvsMarketFlow.Domain.Interfaces.ReadOnly;
 
 namespace NvsMarketFlow.Application.UseCases.Category.Queries;

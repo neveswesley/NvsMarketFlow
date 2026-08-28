@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NvsMarketFlow.Application.Common;
+using NvsMarketFlow.Domain.Common;
 using NvsMarketFlow.Domain.Entities;
 using NvsMarketFlow.Domain.Enums;
 using NvsMarketFlow.Domain.Interfaces.ReadOnly;

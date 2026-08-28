@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NvsMarketFlow.Application.Behaviors;
+using NvsMarketFlow.Application.Common;
 using NvsMarketFlow.Domain.Interfaces.ReadOnly;
 using NvsMarketFlow.Domain.Interfaces.Services;
 using NvsMarketFlow.Domain.Interfaces.WriteOnly;
 using NvsMarketFlow.Infrastructure.DataAccess;
+using NvsMarketFlow.Infrastructure.Interceptors;
 using NvsMarketFlow.Infrastructure.Repositories;
 using NvsMarketFlow.Infrastructure.Security;
 
@@ -23,9 +25,9 @@ public static class ServicesExtensions
 
     private static void AddConnectionString(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection")));
+        services.AddDbContext<AppDbContext>((serviceProvider, options) =>
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+                .AddInterceptors(serviceProvider.GetRequiredService<AuditSaveChangesInterceptor>()));
     }
 
     private static void AddRepositories(this IServiceCollection services)
@@ -63,6 +65,15 @@ public static class ServicesExtensions
         
         services.AddScoped<ISaleReadOnlyRepository, SaleRepository>();
         services.AddScoped<ISaleWriteOnlyRepository, SaleRepository>();
+        
+        services.AddScoped<INotificationReadOnlyRepository, NotificationRepository>();
+        services.AddScoped<INotificationWriteOnlyRepository, NotificationRepository>();
+        
+        services.AddScoped<ICurrentUserContext, CurrentUserContext>();
+        services.AddScoped<AuditSaveChangesInterceptor>();
+        
+        services.AddScoped<IAuditLogReadOnlyRepository, AuditLogRepository>();
+        
         
     }
 

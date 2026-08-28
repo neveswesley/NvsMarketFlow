@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsMarketFlow.Application.Events;
 using NvsMarketFlow.Application.Exceptions;
 using NvsMarketFlow.Application.Requests.Purchase;
 using NvsMarketFlow.Application.Responses.Purchase;
@@ -17,15 +18,14 @@ public class ConfirmPurchase
     {
         private readonly IPurchaseReadOnlyRepository _purchaseReadOnlyRepository;
         private readonly IStockMovementWriteOnlyRepository _stockMovementWriteOnlyRepository;
+        private readonly IPublisher _publisher;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ConfirmPurchaseCommandHandler(
-            IPurchaseReadOnlyRepository purchaseReadOnlyRepository,
-            IStockMovementWriteOnlyRepository stockMovementWriteOnlyRepository,
-            IUnitOfWork unitOfWork)
+        public ConfirmPurchaseCommandHandler(IPurchaseReadOnlyRepository purchaseReadOnlyRepository, IStockMovementWriteOnlyRepository stockMovementWriteOnlyRepository, IPublisher publisher, IUnitOfWork unitOfWork)
         {
             _purchaseReadOnlyRepository = purchaseReadOnlyRepository;
             _stockMovementWriteOnlyRepository = stockMovementWriteOnlyRepository;
+            _publisher = publisher;
             _unitOfWork = unitOfWork;
         }
 
@@ -47,8 +47,14 @@ public class ConfirmPurchase
 
                 if (item.Product.ExceedsMaximumStock)
                 {
-                    warnings.Add(
-                        $"Product '{item.Product.Name}' stock ({item.Product.CurrentStock}) now exceeds its maximum stock ({item.Product.MaximumStock}).");
+                    warnings.Add($"Product '{item.Product.Name}' stock ({item.Product.CurrentStock}) now exceeds its maximum stock ({item.Product.MaximumStock}).");
+
+                    await _publisher.Publish(new ProductMaximumStockExceededEvent(
+                        item.Product.Id,
+                        item.Product.Name,
+                        item.Product.CurrentStock,
+                        item.Product.MaximumStock,
+                        command.Request.UserId), ct);
                 }
 
                 var stockMovement = new Domain.Entities.StockMovement(
