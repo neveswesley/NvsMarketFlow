@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NvsMarketFlow.Application.Requests.User;
 using NvsMarketFlow.Application.UseCases.User.Commands;
@@ -10,7 +11,6 @@ namespace NvsMarketFlow.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        
         private readonly IMediator _mediator;
 
         public UserController(IMediator mediator)
@@ -19,6 +19,7 @@ namespace NvsMarketFlow.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -37,6 +38,7 @@ namespace NvsMarketFlow.API.Controllers
         }
 
         [HttpGet("{id:guid}")]
+        [Authorize(Roles = "Administrator,Supervisor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
@@ -49,6 +51,7 @@ namespace NvsMarketFlow.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator,Supervisor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAll(
@@ -65,6 +68,7 @@ namespace NvsMarketFlow.API.Controllers
         }
 
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
@@ -77,6 +81,7 @@ namespace NvsMarketFlow.API.Controllers
         }
 
         [HttpPatch("{id:guid}/email")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -91,6 +96,7 @@ namespace NvsMarketFlow.API.Controllers
         }
         
         [HttpPatch("{id:guid}/name")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -1,5 +1,6 @@
 ﻿using NvsMarketFlow.Domain.Enums;
 
+
 namespace NvsMarketFlow.Domain.Entities;
 
 public class Product
@@ -47,7 +48,7 @@ public class Product
 
     public Product(string sku, string name, string description, Guid categoryId, Guid? brandId, Guid? supplierId,
         decimal costPrice, decimal salePrice, decimal currentStock, decimal minimumStock, decimal maximumStock,
-        DateTime? expirationDate, Unit unit, Status status)
+        DateTime? expirationDate, Unit unit)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name cannot be empty;");
@@ -94,7 +95,7 @@ public class Product
         MaximumStock = maximumStock;
         ExpirationDate = expirationDate;
         Unit = unit;
-        Status = status;
+        Status = Status.Active;
         CreatedAt = DateTime.UtcNow;
     }
 

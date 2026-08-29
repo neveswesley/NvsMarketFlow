@@ -79,4 +79,12 @@ public class Purchase
 
         Status = PurchaseStatus.Confirmed;
     }
+    
+    public void Cancel()
+    {
+        if (Status != PurchaseStatus.Pending)
+            throw new InvalidOperationException("Only pending purchases can be cancelled.");
+
+        Status = PurchaseStatus.Cancelled;
+    }
 }

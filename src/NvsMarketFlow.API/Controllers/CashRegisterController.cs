@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NvsMarketFlow.Application.Requests.CashMovement;
@@ -13,6 +14,7 @@ namespace NvsMarketFlow.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CashRegisterController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -55,6 +57,7 @@ namespace NvsMarketFlow.API.Controllers
         }
         
         [HttpGet("{id:guid}")]
+        [Authorize(Roles = "Administrator,Supervisor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -68,6 +71,7 @@ namespace NvsMarketFlow.API.Controllers
         }
         
         [HttpGet]
+        [Authorize(Roles = "Administrator,Supervisor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAll(

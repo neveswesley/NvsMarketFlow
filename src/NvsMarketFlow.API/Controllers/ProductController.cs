@@ -5,6 +5,7 @@ using NvsMarketFlow.Application.Requests.Product;
 using NvsMarketFlow.Application.UseCases.Product.Commands;
 using NvsMarketFlow.Application.UseCases.Product.Queries;
 using NvsMarketFlow.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NvsMarketFlow.API.Controllers
 {
@@ -20,6 +21,7 @@ namespace NvsMarketFlow.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateAsync(CreateProductRequest request, CancellationToken ct)
@@ -71,6 +73,7 @@ namespace NvsMarketFlow.API.Controllers
         }
 
         [HttpPut("{id:guid}")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -84,6 +87,7 @@ namespace NvsMarketFlow.API.Controllers
         }
 
         [HttpPatch("{id:guid}/activate")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -97,6 +101,7 @@ namespace NvsMarketFlow.API.Controllers
         }
 
         [HttpPatch("{id:guid}/deactivate")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

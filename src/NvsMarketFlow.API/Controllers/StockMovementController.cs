@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NvsMarketFlow.Application.Requests.StockMovement;
@@ -11,6 +12,7 @@ namespace NvsMarketFlow.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Administrator,Supervisor")]
     public class StockMovementController : ControllerBase
     {
         

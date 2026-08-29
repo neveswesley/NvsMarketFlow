@@ -50,8 +50,7 @@ public class CreateProduct
                 command.Request.MinimumStock,
                 command.Request.MaximumStock,
                 command.Request.ExpirationDate,
-                command.Request.Unit,
-                command.Request.Status);
+                command.Request.Unit);
 
             await _productWriteOnlyRepository.CreateAsync(product, ct);
 

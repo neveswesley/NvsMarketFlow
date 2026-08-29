@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NvsMarketFlow.Application.Requests.Sale;
@@ -10,6 +11,7 @@ namespace NvsMarketFlow.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SaleController : ControllerBase
     {
         private readonly IMediator _mediator;

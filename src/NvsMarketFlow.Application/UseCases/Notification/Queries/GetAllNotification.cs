@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using NvsMarketFlow.Application.Common;
+using NvsMarketFlow.Application.Exceptions;
 using NvsMarketFlow.Application.Responses.Notification;
 using NvsMarketFlow.Domain.Common;
 using NvsMarketFlow.Domain.Interfaces.ReadOnly;
@@ -8,7 +10,6 @@ namespace NvsMarketFlow.Application.UseCases.Notification.Queries;
 public class GetAllNotification
 {
     public sealed record GetAllNotificationQuery(
-        Guid UserId,
         bool? Read,
         int Page = 1,
         int PageSize = 10
@@ -17,16 +18,22 @@ public class GetAllNotification
     public class GetAllNotificationQueryHandler : IRequestHandler<GetAllNotificationQuery, PagedResult<GetNotificationResponse>>
     {
         private readonly INotificationReadOnlyRepository _notificationReadOnlyRepository;
+        private readonly ICurrentUserContext _currentUserContext;
 
-        public GetAllNotificationQueryHandler(INotificationReadOnlyRepository notificationReadOnlyRepository)
+
+        public GetAllNotificationQueryHandler(INotificationReadOnlyRepository notificationReadOnlyRepository, ICurrentUserContext currentUserContext)
         {
             _notificationReadOnlyRepository = notificationReadOnlyRepository;
+            _currentUserContext = currentUserContext;
         }
 
         public async Task<PagedResult<GetNotificationResponse>> Handle(GetAllNotificationQuery request, CancellationToken ct)
         {
+            var userId = _currentUserContext.UserId
+                          ?? throw new UnauthorizedException("User not authenticated.");
+
             var result = await _notificationReadOnlyRepository.GetAllAsync(
-                request.UserId, request.Read, request.Page, request.PageSize, ct);
+                userId, request.Read, request.Page, request.PageSize, ct);
 
             var items = result.Items
                 .Select(n => new GetNotificationResponse

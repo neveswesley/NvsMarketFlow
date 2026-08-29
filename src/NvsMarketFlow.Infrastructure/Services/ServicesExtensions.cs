@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NvsMarketFlow.Application.Behaviors;
 using NvsMarketFlow.Application.Common;
+using NvsMarketFlow.Application.Interfaces;
 using NvsMarketFlow.Domain.Interfaces.ReadOnly;
 using NvsMarketFlow.Domain.Interfaces.Services;
 using NvsMarketFlow.Domain.Interfaces.WriteOnly;
@@ -74,6 +75,10 @@ public static class ServicesExtensions
         
         services.AddScoped<IAuditLogReadOnlyRepository, AuditLogRepository>();
         
+        services.AddScoped<ITokenService, JwtTokenService>();
+        
+        services.AddScoped<IRefreshTokenReadOnlyRepository, RefreshTokenRepository>();
+        services.AddScoped<IRefreshTokenWriteOnlyRepository, RefreshTokenRepository>();
         
     }
 

@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NvsMarketFlow.Application.Requests.Category;
 using NvsMarketFlow.Application.UseCases.Category.Commands;
@@ -19,10 +20,10 @@ namespace NvsMarketFlow.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request, CancellationToken ct)
         {
             var command = new CreateCategory.CreateCategoryCommand(request);
@@ -62,6 +63,7 @@ namespace NvsMarketFlow.API.Controllers
         }
         
         [HttpPut("{id:guid}")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -75,6 +77,7 @@ namespace NvsMarketFlow.API.Controllers
         }
 
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]

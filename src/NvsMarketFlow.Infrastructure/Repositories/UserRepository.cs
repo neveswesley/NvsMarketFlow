@@ -21,7 +21,6 @@ public class UserRepository : IUserWriteOnlyRepository, IUserReadOnlyRepository
     public async Task<User> CreateAsync(User user, CancellationToken cancellationToken)
     {
         await _dbContext.Users.AddAsync(user, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
         return user;
     }
 

@@ -24,5 +24,4 @@ public class CreateProductRequest
     
     public Unit Unit { get; set; }
     
-    public Status Status { get; set; }
 }

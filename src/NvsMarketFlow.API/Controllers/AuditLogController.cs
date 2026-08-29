@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NvsMarketFlow.Application.UseCases.AuditLog.Queries;
@@ -7,6 +8,7 @@ namespace NvsMarketFlow.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Administrator")]
     public class AuditLogController : ControllerBase
     {
         private readonly IMediator _mediator;

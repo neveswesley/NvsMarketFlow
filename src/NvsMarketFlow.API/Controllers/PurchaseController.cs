@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NvsMarketFlow.Application.Requests.Purchase;
@@ -10,6 +11,7 @@ namespace NvsMarketFlow.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PurchaseController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -20,6 +22,7 @@ namespace NvsMarketFlow.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator,Supervisor")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateAsync([FromBody] CreatePurchaseRequest request, CancellationToken ct)
@@ -36,6 +39,7 @@ namespace NvsMarketFlow.API.Controllers
         }
         
         [HttpPost("{purchaseId:guid}/items")]
+        [Authorize(Roles = "Administrator,Supervisor")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -56,6 +60,7 @@ namespace NvsMarketFlow.API.Controllers
         }
         
         [HttpDelete("{purchaseId:guid}/items/{itemId:guid}")]
+        [Authorize(Roles = "Administrator,Supervisor")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -106,6 +111,7 @@ namespace NvsMarketFlow.API.Controllers
         }
         
         [HttpPatch("{id:guid}/confirm")]
+        [Authorize(Roles = "Administrator,Supervisor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -119,6 +125,20 @@ namespace NvsMarketFlow.API.Controllers
             var result = await _mediator.Send(command, ct);
 
             return Ok(result);
+        }
+        
+        [HttpPatch("{id:guid}/cancel")]
+        [Authorize(Roles = "Administrator,Supervisor")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Cancel([FromRoute] Guid id, CancellationToken ct)
+        {
+            var command = new CancelPurchase.CancelPurchaseCommand(id);
+
+            await _mediator.Send(command, ct);
+
+            return NoContent();
         }
     }
 }

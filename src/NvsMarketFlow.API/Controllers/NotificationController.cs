@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NvsMarketFlow.Application.UseCases.Notification.Commands;
@@ -8,6 +9,7 @@ namespace NvsMarketFlow.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NotificationController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -27,7 +29,7 @@ namespace NvsMarketFlow.API.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10)
         {
-            var query = new GetAllNotification.GetAllNotificationQuery(userId, read, page, pageSize);
+            var query = new GetAllNotification.GetAllNotificationQuery(read, page, pageSize);
 
             var result = await _mediator.Send(query, ct);
 

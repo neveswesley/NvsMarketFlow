@@ -39,6 +39,7 @@ public class ExceptionHandlingMiddleware
             or UnauthorizedException
             or BadRequestException
             or DuplicateFieldException
+            or ForbiddenException
             or CategoryHasLinkedProductsException;
 
         if (isExpectedException)
@@ -67,6 +68,7 @@ public class ExceptionHandlingMiddleware
             BadRequestException => StatusCodes.Status400BadRequest,
             DuplicateFieldException => StatusCodes.Status409Conflict,
             CategoryHasLinkedProductsException => StatusCodes.Status409Conflict,
+            ForbiddenException => StatusCodes.Status403Forbidden,
             _ => StatusCodes.Status500InternalServerError
         };
 
