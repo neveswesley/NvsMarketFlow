@@ -28,6 +28,7 @@ public class GetAllBrands
 
             var items = result.Items.Select(b => new GetBrandResponse()
             {
+                Id = b.Id,
                 Name = b.Name,
             }).ToList();
 

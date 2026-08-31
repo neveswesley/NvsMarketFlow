@@ -120,4 +120,14 @@ public class ProductRepository : IProductWriteOnlyRepository, IProductReadOnlyRe
             .FirstOrDefaultAsync(p => p.Id == id, ct);
     }
     
+    public async Task<Product?> GetByBarcodeAsync(string barcode, CancellationToken ct)
+    {
+        return await _dbContext.Products
+            .Include(p => p.Category)
+            .Include(p => p.Brand)
+            .Include(p => p.Supplier)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Barcode == barcode, ct);
+    }
+    
 }

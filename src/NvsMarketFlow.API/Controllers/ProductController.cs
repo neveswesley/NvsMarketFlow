@@ -114,5 +114,18 @@ namespace NvsMarketFlow.API.Controllers
             return NoContent();
         }
         
+        [HttpGet("barcode/{barcode}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetByBarcode([FromRoute] string barcode, CancellationToken ct)
+        {
+            var query = new GetProductByBarcode.GetProductByBarcodeQuery(barcode);
+
+            var result = await _mediator.Send(query, ct);
+
+            return Ok(result);
+        }
+        
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsMarketFlow.Application.Common;
 using NvsMarketFlow.Application.Exceptions;
 using NvsMarketFlow.Application.Responses.CashRegister;
 using NvsMarketFlow.Domain.Interfaces.ReadOnly;
@@ -12,10 +13,14 @@ public class GetCashRegisterById
     public class GetCashRegisterByIdQueryHandler : IRequestHandler<GetCashRegisterByIdQuery, GetCashRegisterByIdResponse>
     {
         private readonly ICashRegisterReadOnlyRepository _cashRegisterReadOnlyRepository;
+        private readonly ICurrentUserContext _currentUserContext;
 
-        public GetCashRegisterByIdQueryHandler(ICashRegisterReadOnlyRepository cashRegisterReadOnlyRepository)
+        public GetCashRegisterByIdQueryHandler(
+            ICashRegisterReadOnlyRepository cashRegisterReadOnlyRepository,
+            ICurrentUserContext currentUserContext)
         {
             _cashRegisterReadOnlyRepository = cashRegisterReadOnlyRepository;
+            _currentUserContext = currentUserContext;
         }
 
         public async Task<GetCashRegisterByIdResponse> Handle(GetCashRegisterByIdQuery request, CancellationToken ct)
@@ -24,6 +29,10 @@ public class GetCashRegisterById
 
             if (cashRegister is null)
                 throw new NotFoundException($"Cash register with id '{request.Id}' not found.");
+
+            var isSupervisor = _currentUserContext.Role == "Supervisor";
+            if (!isSupervisor && !_currentUserContext.IsOwnerOrAdmin(cashRegister.UserId))
+                throw new ForbiddenException("You do not have access to this cash register.");
 
             return new GetCashRegisterByIdResponse
             {

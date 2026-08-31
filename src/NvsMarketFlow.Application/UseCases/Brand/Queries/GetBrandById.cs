@@ -26,6 +26,7 @@ public class GetBrandById
 
             return new GetBrandResponse()
             {
+                Id = brand.Id,
                 Name = brand.Name
             };
         }

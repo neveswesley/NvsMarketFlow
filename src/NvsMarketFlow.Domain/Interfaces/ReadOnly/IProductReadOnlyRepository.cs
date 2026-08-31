@@ -6,6 +6,7 @@ namespace NvsMarketFlow.Domain.Interfaces.ReadOnly;
 
 public interface IProductReadOnlyRepository
 {
+    Task<Product?> GetByBarcodeAsync(string barcode, CancellationToken ct);
     Task<bool> ExistsByNameAsync(string name, Guid? excludeId, CancellationToken ct);
     Task<bool> ExistsBySkuAsync(string sku, Guid? excludeId, CancellationToken ct);
     Task<bool> ExistsByBarcodeAsync(string barcode, Guid? excludeId, CancellationToken ct);

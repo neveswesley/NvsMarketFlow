@@ -57,7 +57,6 @@ namespace NvsMarketFlow.API.Controllers
         }
         
         [HttpGet("{id:guid}")]
-        [Authorize(Roles = "Administrator,Supervisor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

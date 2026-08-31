@@ -32,6 +32,7 @@ public abstract class GetAllCategory
             var items = result.Items
                 .Select(c => new GetAllCategoryResponse
                 {
+                    Id = c.Id,
                     Name = c.Name
                 })
                 .ToList();

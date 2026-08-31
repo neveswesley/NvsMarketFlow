@@ -7,7 +7,6 @@ public sealed class GetAllNotificationQueryValidator : AbstractValidator<GetAllN
 {
     public GetAllNotificationQueryValidator()
     {
-        RuleFor(x => x.UserId).NotEmpty().WithMessage("User id is required.");
         RuleFor(x => x.Page).GreaterThanOrEqualTo(1);
         RuleFor(x => x.PageSize).InclusiveBetween(1, 100);
     }
